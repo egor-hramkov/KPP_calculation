@@ -25,7 +25,6 @@ a = GearRatioService(
     frequency_turns_per_min=list(frequency_turns_per_min)
 )
 
-
 data_frame = pd.DataFrame()
 data_frame['frequency'] = frequency_turns_per_min
 data_frame['hub1'] = a.gear_ratio_hub1
@@ -33,6 +32,3 @@ data_frame['hub2'] = a.gear_ratio_hub2
 data_frame['hub3'] = a.gear_ratio_hub3
 data_frame['hub4'] = a.gear_ratio_hub4
 data_frame['hub5'] = a.gear_ratio_hub5
-
-
-b=1

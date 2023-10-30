@@ -1,28 +1,18 @@
+from dataclasses import dataclass
 
+
+@dataclass
 class GearRatioService:
-    def __init__(
-            self,
-            hub1: float,
-            hub2: float,
-            hub3: float,
-            hub4: float,
-            hub5: float,
-            hub_reverse: float,
-            transfer_case: float,
-            on_board_gearbox: float,
-            main_pair: float,
-            frequency_turns_per_min: list
-    ):
-        self.hub1 = hub1
-        self.hub2 = hub2
-        self.hub3 = hub3
-        self.hub4 = hub4
-        self.hub5 = hub5
-        self.hub_reverse = hub_reverse
-        self.transfer_case = transfer_case
-        self.on_board_gearbox = on_board_gearbox
-        self.main_pair = main_pair
-        self.frequency_turns_per_min = frequency_turns_per_min
+    hub1: float
+    hub2: float
+    hub3: float
+    hub4: float
+    hub5: float
+    hub_reverse: float
+    transfer_case: float
+    on_board_gearbox: float
+    main_pair: float
+    frequency_turns_per_min: list
 
     @property
     def gear_ratio_hub1(self):
