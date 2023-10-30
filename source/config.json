@@ -1,0 +1,15 @@
+{
+  "data":{
+    "gear_ratio": {
+        "hub_1": 4.05,
+        "hub_2": 2.34,
+        "hub_3": 1.395,
+        "hub_4": 1.0,
+        "hub_5": 0.849,
+        "hub_reverse": 3.51,
+        "transfer_case": 1.0,
+        "on_board_gearbox": 1.0,
+        "main_pair": 4.3
+    }
+  }
+}
