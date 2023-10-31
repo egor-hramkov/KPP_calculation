@@ -10,6 +10,11 @@
         "transfer_case": 1.0,
         "on_board_gearbox": 1.0,
         "main_pair": 4.3
+    },
+    "wheel_info": {
+      "profile_width": 185,
+      "profile_height": 80,
+      "diameter": 16
     }
   }
 }

@@ -3,7 +3,7 @@ import json
 import numpy as np
 import pandas as pd
 
-from gear_ratio_service import GearRatioService
+from turnovers_wheel_service import TurnoversWheelsService
 
 frequency_turns_per_min = np.linspace(600, 4200, 19)
 
@@ -12,7 +12,7 @@ config = json.load(file_json)
 
 gear_rations = config['data']['gear_ratio']
 
-a = GearRatioService(
+a = TurnoversWheelsService(
     hub1=gear_rations['hub_1'],
     hub2=gear_rations['hub_2'],
     hub3=gear_rations['hub_3'],
@@ -32,3 +32,6 @@ data_frame['hub2'] = a.gear_ratio_hub2
 data_frame['hub3'] = a.gear_ratio_hub3
 data_frame['hub4'] = a.gear_ratio_hub4
 data_frame['hub5'] = a.gear_ratio_hub5
+
+
+
