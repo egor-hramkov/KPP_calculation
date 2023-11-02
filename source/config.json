@@ -35,6 +35,19 @@
         {"freq_turns_per_min": 4000, "Hm": 191, "horse_power":109 },
         {"freq_turns_per_min": 4200, "Hm": 177, "horse_power":106 }
       ]
+    },
+    "number_of_spur_gears": [2, 2, 2, 0, 2],
+    "number_of_bevel_gears": [1, 1, 1, 1, 1],
+    "number_of_cardan_gears": [2, 2, 2, 2, 2],
+    "weights": {
+        "car_weight": 2275,
+        "full_mass": 3500,
+        "passenger_seats": 7
+    },
+    "dimensions": {
+        "car_width": 2.068,
+        "car_height": 2.172,
+        "streamline_coefficient": 0.45
     }
   }
 }

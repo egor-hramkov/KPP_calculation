@@ -14,16 +14,11 @@ class SpeedCarService:
         self.nominal_radius = 0.0254 * (self.diameter / 2) + (self.profile_width / 1000) * (self.profile_height / 100)
         self.static_radius = self.nominal_radius * self.__tire_crumpling_ratio()
         self.dynamic_radius = self.nominal_radius - ((self.nominal_radius - self.static_radius) / 3)
-        self.turnovers_hub1 = self.turnovers_wheel_data_frame.iloc[:,
-                               1].to_numpy()  # массив кол-ва оборотов колеса на 1 скорости
-        self.turnovers_hub2 = self.turnovers_wheel_data_frame.iloc[:,
-                               2].to_numpy()  # массив кол-ва оборотов колеса на 2 скорости
-        self.turnovers_hub3 = self.turnovers_wheel_data_frame.iloc[:,
-                               3].to_numpy()  # массив кол-ва оборотов колеса на 3 скорости
-        self.turnovers_hub4 = self.turnovers_wheel_data_frame.iloc[:,
-                               4].to_numpy()  # массив кол-ва оборотов колеса на 4 скорости
-        self.turnovers_hub5 = self.turnovers_wheel_data_frame.iloc[:,
-                               5].to_numpy()  # массив кол-ва оборотов колеса на 5 скорости
+        self.turnovers_hub1 = self.turnovers_wheel_data_frame.iloc[:, 1].to_numpy()  # массив кол-ва оборотов колеса на 1 скорости
+        self.turnovers_hub2 = self.turnovers_wheel_data_frame.iloc[:, 2].to_numpy()  # массив кол-ва оборотов колеса на 2 скорости
+        self.turnovers_hub3 = self.turnovers_wheel_data_frame.iloc[:, 3].to_numpy()  # массив кол-ва оборотов колеса на 3 скорости
+        self.turnovers_hub4 = self.turnovers_wheel_data_frame.iloc[:, 4].to_numpy()  # массив кол-ва оборотов колеса на 4 скорости
+        self.turnovers_hub5 = self.turnovers_wheel_data_frame.iloc[:, 5].to_numpy()  # массив кол-ва оборотов колеса на 5 скорости
 
     @property
     def speed_hub1(self):
@@ -64,6 +59,6 @@ class SpeedCarService:
         """
         speed_array = []
         for turns_while in turnovers_hub:
-            speed=(self.dynamic_radius*2*3.1415926534)*turns_while/1000*60
+            speed = (self.dynamic_radius * 2 * 3.1415926534) * turns_while / 1000 * 60
             speed_array.append(speed)
         return speed_array
