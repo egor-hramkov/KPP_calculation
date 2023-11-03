@@ -3,45 +3,42 @@ from dataclasses import dataclass
 
 @dataclass
 class TurnoversWheelsService:
-    hub1: float
-    hub2: float
-    hub3: float
-    hub4: float
-    hub5: float
-    hub_reverse: float
-    transfer_case: float
-    on_board_gearbox: float
-    main_pair: float
+    full_gear_ratio_hub1: float
+    full_gear_ratio_hub2: float
+    full_gear_ratio_hub3: float
+    full_gear_ratio_hub4: float
+    full_gear_ratio_hub5: float
+    full_gear_ratio_reverse: float
     frequency_turns_per_min: list
 
     @property
-    def gear_ratio_hub1(self):
-        return self.__calculate_gear_ratio_array(self.hub1)
+    def turnovers_wheels_hub1(self):
+        return self.__calculate_turnovers_wheels_array(self.full_gear_ratio_hub1)
 
     @property
-    def gear_ratio_hub2(self):
-        return self.__calculate_gear_ratio_array(self.hub2)
+    def turnovers_wheels_hub2(self):
+        return self.__calculate_turnovers_wheels_array(self.full_gear_ratio_hub2)
 
     @property
-    def gear_ratio_hub3(self):
-        return self.__calculate_gear_ratio_array(self.hub3)
+    def turnovers_wheels_hub3(self):
+        return self.__calculate_turnovers_wheels_array(self.full_gear_ratio_hub3)
 
     @property
-    def gear_ratio_hub4(self):
-        return self.__calculate_gear_ratio_array(self.hub4)
+    def turnovers_wheels_hub4(self):
+        return self.__calculate_turnovers_wheels_array(self.full_gear_ratio_hub4)
 
     @property
-    def gear_ratio_hub5(self):
-        return self.__calculate_gear_ratio_array(self.hub5)
+    def turnovers_wheels_hub5(self):
+        return self.__calculate_turnovers_wheels_array(self.full_gear_ratio_hub5)
 
     @property
-    def gear_ratio_hub_reverse(self):
-        return self.__calculate_gear_ratio_array(self.hub_reverse)
+    def turnovers_wheels_reverse(self):
+        return self.__calculate_turnovers_wheels_array(self.full_gear_ratio_reverse)
 
-    def __calculate_gear_ratio_array(self, hub: float):
+    def __calculate_turnovers_wheels_array(self, full_gear_ratio: float):
         """"Возвращает массив оборотов колеса в минуту относительно частоты оборотов двигателя и номера передачи"""
         gear_ratio_array = []
         for frequency in self.frequency_turns_per_min:
-            gear_ratio = frequency / (hub * self.transfer_case * self.on_board_gearbox * self.main_pair)
+            gear_ratio = frequency / full_gear_ratio
             gear_ratio_array.append(gear_ratio)
         return gear_ratio_array
