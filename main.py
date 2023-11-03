@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 
 from services.calculate_KPD_service import CalculateKPDService
-from services.dimensions_service import DimensionsService
+from services.air_resistance_service import DimensionsService, AirResistanceService
 from services.power_and_torque import PowerAndTorqueService
 from services.speed_car_service import SpeedCarService
 from services.turnovers_wheel_service import TurnoversWheelsService
@@ -54,6 +54,8 @@ speed_car['hub3'] = speed_car_service.speed_hub3
 speed_car['hub4'] = speed_car_service.speed_hub4
 speed_car['hub5'] = speed_car_service.speed_hub5
 
+p=1
+
 
 # Рассчёт мощности и крутящего момента
 power_and_torque_info = config['data']['engine_performance']['measurements']
@@ -94,7 +96,7 @@ passenger_seats = config['data']['weights']['passenger_seats']
 
 
 # Таблица габаритных размеров
-dimensions_data = DimensionsService(
+dimensions_data = AirResistanceService(
     config['data']['dimensions']['car_width'],
     config['data']['dimensions']['car_height'],
     config['data']['dimensions']['streamline_coefficient']
