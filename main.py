@@ -59,7 +59,8 @@ speed_car_service = SpeedCarService(
     wheel_info['profile_width'],
     wheel_info['profile_height'],
     wheel_info['diameter'],
-    turnovers_wheel
+    turnovers_wheel,
+    frequency_turns_per_min
 )
 
 speed_car = pd.DataFrame()

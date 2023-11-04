@@ -1,14 +1,16 @@
 from dataclasses import dataclass
 from pandas import DataFrame
-import math
+import matplotlib.pyplot as plt
 
 
 @dataclass
 class SpeedCarService:
+    """Рассчёт скорости от оборотов двигателя км/ч"""
     profile_width: float
     profile_height: float
     diameter: float
     turnovers_wheel_data_frame: DataFrame
+    frequency_turns_per_min: list
 
     def __post_init__(self):
         self.nominal_radius = 0.0254 * (self.diameter / 2) + (self.profile_width / 1000) * (self.profile_height / 100)
@@ -19,28 +21,34 @@ class SpeedCarService:
         self.turnovers_hub3 = self.turnovers_wheel_data_frame.iloc[:, 3].to_numpy()  # массив кол-ва оборотов колеса на 3 скорости
         self.turnovers_hub4 = self.turnovers_wheel_data_frame.iloc[:, 4].to_numpy()  # массив кол-ва оборотов колеса на 4 скорости
         self.turnovers_hub5 = self.turnovers_wheel_data_frame.iloc[:, 5].to_numpy()  # массив кол-ва оборотов колеса на 5 скорости
+        self.show_graphic()
 
     @property
-    def speed_hub1(self):
+    def speed_hub1(self) -> list:
+        """Массив скорости для 1 передачи"""
         return self.__calculate_speed_array(self.turnovers_hub1)
 
     @property
-    def speed_hub2(self):
+    def speed_hub2(self) -> list:
+        """Массив скорости для 2 передачи"""
         return self.__calculate_speed_array(self.turnovers_hub2)
 
     @property
-    def speed_hub3(self):
+    def speed_hub3(self) -> list:
+        """Массив скорости для 3 передачи"""
         return self.__calculate_speed_array(self.turnovers_hub3)
 
     @property
-    def speed_hub4(self):
+    def speed_hub4(self) -> list:
+        """Массив скорости для 4 передачи"""
         return self.__calculate_speed_array(self.turnovers_hub4)
 
     @property
-    def speed_hub5(self):
+    def speed_hub5(self) -> list:
+        """Массив скорости для 5 передачи"""
         return self.__calculate_speed_array(self.turnovers_hub5)
 
-    def __tire_crumpling_ratio(self):
+    def __tire_crumpling_ratio(self) -> float:
         """
             Возвращает коефициент смятия шин относительно высоты профиля колеса
         """
@@ -51,7 +59,7 @@ class SpeedCarService:
         else:
             return 0.814285714
 
-    def __calculate_speed_array(self, turnovers_hub):
+    def __calculate_speed_array(self, turnovers_hub) -> list:
         """
         Возвращает массив скорости автомобиля, относительно парамтеров колёс, кол-ва оборотов двигателя и кол-ва оборотов колеса для определённого номера скорости
         :param turnoverse_hub: массив оборотов колеса в минуту конкретной скорости
@@ -62,3 +70,16 @@ class SpeedCarService:
             speed = (self.dynamic_radius * 2 * 3.1415926534) * turns_while / 1000 * 60
             speed_array.append(speed)
         return speed_array
+
+    def show_graphic(self):
+        """Построение графика скорости км/ч от оборотов двигателя"""
+        plt.ylabel("Скорость км/ч")
+        plt.xlabel("Частота, об/мин")
+        plt.plot(self.frequency_turns_per_min, self.speed_hub1, label='1 передача')
+        plt.plot(self.frequency_turns_per_min, self.speed_hub2, label='2 передача')
+        plt.plot(self.frequency_turns_per_min, self.speed_hub3, label='3 передача')
+        plt.plot(self.frequency_turns_per_min, self.speed_hub4, label='4 передача')
+        plt.plot(self.frequency_turns_per_min, self.speed_hub5, label='5 передача')
+        plt.legend()
+        plt.grid(axis='y')
+        plt.show()
