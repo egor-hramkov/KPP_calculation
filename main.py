@@ -7,6 +7,7 @@ from services.air_resistance_service import AirResistanceService
 from services.gear_ratio_service import GearRatioService
 from services.power_and_torque import PowerAndTorqueService
 from services.speed_car_service import SpeedCarService
+from services.torque_on_wheel_service import TorqueOnWheelService
 from services.turnovers_wheel_service import TurnoversWheelsService
 
 # загружаем данные с файла конфига
@@ -132,4 +133,15 @@ air_resistance['hub4'] = air_resistance_service.air_resistance_hub4
 air_resistance['hub5'] = air_resistance_service.air_resistance_hub5
 
 #таблица крутящего момента на колесе
+torque_on_wheel_service = TorqueOnWheelService(gear_ratio_info,power_and_torque, kpd)
 torque_on_wheel = pd.DataFrame()
+torque_on_wheel['frequency_turns_per_min'] = frequency_turns_per_min
+torque_on_wheel['hub1'] = torque_on_wheel_service.torque_on_wheel_hub1
+torque_on_wheel['hub2'] = torque_on_wheel_service.torque_on_wheel_hub2
+torque_on_wheel['hub3'] = torque_on_wheel_service.torque_on_wheel_hub3
+torque_on_wheel['hub4'] = torque_on_wheel_service.torque_on_wheel_hub4
+torque_on_wheel['hub5'] = torque_on_wheel_service.torque_on_wheel_hub5
+
+#таблица совмещенной мощьности на колесе для каждой передачи и сопротивление воздуха
+
+
