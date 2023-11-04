@@ -80,6 +80,17 @@ power_and_torque_hms = [data['Hm'] for data in power_and_torque_info]
 power_and_torque_horse_powers = [data['horse_power'] for data in power_and_torque_info]
 # ToDo Храмков 02.11: пока что данные берутся от конфига, но дальше ничего с ними не делается т.к. НЕПОНЯТНО! По идее должны использоваться в сервисе ниже (PowerAndTorqueService)
 
+#таблица коэффициентов полинома
+coefficient_polynom = pd.DataFrame()
+coefficient_polynom['Даннык']=['Коэффициент момент', 'Коэффициент мощность']
+coefficient_polynom['X/5']=[0.0, 0.0]
+coefficient_polynom['X/4']=[6.5177394e-13, -1.7511371e-13]
+coefficient_polynom['X/3']=[-1.035910648521e-08, -1.97857344017e-09]
+coefficient_polynom['X/2']=[0.00003447582159142, 0.0000155372640980185]
+coefficient_polynom['X']=[-0.010124117314029, 0.00599106601989137]
+coefficient_polynom['Собственный коэффициент']=[175.14493655691, 7.45996575251171]
+
+
 power_and_torque_data = PowerAndTorqueService(
     frequency_turns_per_min=list(frequency_turns_per_min)
 )
