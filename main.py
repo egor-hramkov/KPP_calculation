@@ -158,9 +158,24 @@ torque_on_wheel['hub5'] = torque_on_wheel_service.torque_on_wheel_hub5
 km_per_hour = config['data']['km_per_hour']
 dependence_torque_on_air_resistance_service = DependenceOfTorqueOnAirResistanceService(km_per_hour, dimensions,
                                                                                        speed_car,
-                                                                                       coefficient_polynom)
-dependence_torque_on_air_resistance = pd.DateFrame()
+                                                                                       coefficient_polynom,
+                                                                                       gear_ratio_info,
+                                                                                       kpd)
+dependence_torque_on_air_resistance = pd.DataFrame()
 dependence_torque_on_air_resistance['Км/ч'] = km_per_hour
 dependence_torque_on_air_resistance['Сопротивление воздуха'] = dependence_torque_on_air_resistance_service.air_resistance
 dependence_torque_on_air_resistance['Обороты 1 передачи'] = dependence_torque_on_air_resistance_service.turnovers_hub1
+dependence_torque_on_air_resistance['Крутящий момент 1'] = dependence_torque_on_air_resistance_service.torque_hub1
+dependence_torque_on_air_resistance['Обороты 2 передачи'] = dependence_torque_on_air_resistance_service.turnovers_hub2
+dependence_torque_on_air_resistance['Крутящий момент 2'] = dependence_torque_on_air_resistance_service.torque_hub2
+dependence_torque_on_air_resistance['Обороты 3 передачи'] = dependence_torque_on_air_resistance_service.turnovers_hub3
+dependence_torque_on_air_resistance['Крутящий момент 3'] = dependence_torque_on_air_resistance_service.torque_hub3
+dependence_torque_on_air_resistance['Обороты 4 передачи'] = dependence_torque_on_air_resistance_service.turnovers_hub4
+dependence_torque_on_air_resistance['Крутящий момент 4'] = dependence_torque_on_air_resistance_service.torque_hub4
+dependence_torque_on_air_resistance['Обороты 5 передачи'] = dependence_torque_on_air_resistance_service.turnovers_hub5
+dependence_torque_on_air_resistance['Крутящий момент 5'] = dependence_torque_on_air_resistance_service.torque_hub5
+
+#табл коэффициент сопротивления кочению колеса
+
+
 
