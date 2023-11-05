@@ -262,4 +262,4 @@ rolling_resistance['8.Мокрая укатанная грунтовая дор�
 rolling_resistance.name = 'rolling_resistance'
 all_dataframes.append(rolling_resistance)
 
-response = JSONHelper().dataframes_to_json(all_dataframes)
+response = JSONHelper().dataframes_to_dict(all_dataframes)
