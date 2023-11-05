@@ -7,6 +7,7 @@ from services.air_resistance_service import AirResistanceService
 from services.dependence_torque_on_air_resistance_service import DependenceOfTorqueOnAirResistanceService
 from services.gear_ratio_service import GearRatioService
 from services.power_and_torque import PowerAndTorqueService
+from services.rolling_resistance_service import RollingResistanceService
 from services.speed_car_service import SpeedCarService
 from services.torque_on_wheel_service import TorqueOnWheelService
 from services.turnovers_wheel_service import TurnoversWheelsService
@@ -115,11 +116,6 @@ kpd['number_of_bevel_gears'] = kpd_data.number_of_bevel_gears
 kpd['number_of_cardan_gears'] = kpd_data.number_of_cardan_gears
 kpd['KPD'] = kpd_data.KPD
 
-# Таблица масс автомобиля
-car_weight = config['data']['weights']['car_weight']
-full_mass = config['data']['weights']['full_mass']
-passenger_seats = config['data']['weights']['passenger_seats']
-
 # Таблица габаритных размеров
 air_resistance_service = AirResistanceService(
     config['data']['dimensions']['car_width'],
@@ -163,7 +159,8 @@ dependence_torque_on_air_resistance_service = DependenceOfTorqueOnAirResistanceS
                                                                                        kpd)
 dependence_torque_on_air_resistance = pd.DataFrame()
 dependence_torque_on_air_resistance['Км/ч'] = km_per_hour
-dependence_torque_on_air_resistance['Сопротивление воздуха'] = dependence_torque_on_air_resistance_service.air_resistance
+dependence_torque_on_air_resistance[
+    'Сопротивление воздуха'] = dependence_torque_on_air_resistance_service.air_resistance
 dependence_torque_on_air_resistance['Обороты 1 передачи'] = dependence_torque_on_air_resistance_service.turnovers_hub1
 dependence_torque_on_air_resistance['Крутящий момент 1'] = dependence_torque_on_air_resistance_service.torque_hub1
 dependence_torque_on_air_resistance['Обороты 2 передачи'] = dependence_torque_on_air_resistance_service.turnovers_hub2
@@ -175,7 +172,52 @@ dependence_torque_on_air_resistance['Крутящий момент 4'] = depende
 dependence_torque_on_air_resistance['Обороты 5 передачи'] = dependence_torque_on_air_resistance_service.turnovers_hub5
 dependence_torque_on_air_resistance['Крутящий момент 5'] = dependence_torque_on_air_resistance_service.torque_hub5
 
-#табл коэффициент сопротивления кочению колеса
+# таблица масс автомобиля
+car_weight = config['data']['weights']['car_weight']
+full_mass = config['data']['weights']['full_mass']
+passenger_seats = config['data']['weights']['passenger_seats']
+mass_table = pd.DataFrame()
+mass_table['Масса автомобиля'] = [car_weight]
+mass_table['Снаряжённая масса'] = [car_weight + 70]
+mass_table['Полная масса'] = [full_mass]
+mass_table['Масса полезного груза'] = [full_mass - (car_weight + 70) - (70 * (passenger_seats - 1))]
+mass_table['Число посадочных мест'] = [passenger_seats]
 
+# таблица коэффициент сопротивления кочению колеса
+coefficient_rolling_resistance_wheel = pd.DataFrame()
+coefficient_rolling_resistance_wheel['Погодные условия'] = ['1.Хорошее состояние сухого асфальта',
+                                                            '2.Удовлетворительное состояние сухого асфальта',
+                                                            '3.Обледенелелая асфальтная дорога',
+                                                            '4.Гравийая укатаная дорога',
+                                                            '5.Хорошее состояние булыжника',
+                                                            '6.Удовлетворительное состояние булыжника',
+                                                            '7.Сухая укатанная грунтовая дорога',
+                                                            '8.Мокрая укатанная грунтовая дорога']
+coefficient_rolling_resistance_wheel['Минимум'] = [0.008, 0.015, 0.015, 0.02, 0.025, 0.035, 0.025, 0.05]
+coefficient_rolling_resistance_wheel['Максимум'] = [0.015, 0.03, 0.02, 0.025, 0.03, 0.05, 0.035, 0.15]
 
+# табл коэффициента влияния скорости в км/ч
+coefficient_influence_speed = pd.DataFrame()
+coefficient_influence_speed['Тип автомобиля'] = ['Легковой', 'Грузовой']
+coefficient_influence_speed['Км/час минимум'] = [0.00004, 0.00002]
+coefficient_influence_speed['Км/час максимум'] = [0.00005, 0.00003]
+coefficient_influence_speed['М/с минимум'] = [0.00051, 0.00026]
+coefficient_influence_speed['М/с максимум'] = [0.00065, 0.00039]
 
+# таблица коэффициент сопротивления качению
+rolling_resistance_service = RollingResistanceService(km_per_hour, coefficient_rolling_resistance_wheel, mass_table,
+                                                      coefficient_influence_speed)
+rolling_resistance = pd.DataFrame()
+rolling_resistance['Км/ч'] = km_per_hour
+rolling_resistance['1.Хорошее состояние сухого асфальта'] = rolling_resistance_service.coef_rolling_resistance_type1
+rolling_resistance[
+    '2.Удовлетворительное состояние сухого асфальта'] = rolling_resistance_service.coef_rolling_resistance_type2
+rolling_resistance['3.Обледенелелая асфальтная дорога'] = rolling_resistance_service.coef_rolling_resistance_type3
+rolling_resistance['4.Гравийая укатаная дорога'] = rolling_resistance_service.coef_rolling_resistance_type4
+rolling_resistance['5.Хорошее состояние булыжника'] = rolling_resistance_service.coef_rolling_resistance_type5
+rolling_resistance[
+    '6.Удовлетворительное состояние булыжника'] = rolling_resistance_service.coef_rolling_resistance_type6
+rolling_resistance['7.Сухая укатанная грунтовая дорога'] = rolling_resistance_service.coef_rolling_resistance_type7
+rolling_resistance['8.Мокрая укатанная грунтовая дорога'] = rolling_resistance_service.coef_rolling_resistance_type8
+
+p = 1
