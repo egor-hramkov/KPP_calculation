@@ -4,6 +4,7 @@ import pandas as pd
 
 from services.calculate_KPD_service import CalculateKPDService
 from services.air_resistance_service import AirResistanceService
+from services.dependence_torque_on_air_resistance_service import DependenceOfTorqueOnAirResistanceService
 from services.gear_ratio_service import GearRatioService
 from services.power_and_torque import PowerAndTorqueService
 from services.speed_car_service import SpeedCarService
@@ -80,16 +81,15 @@ power_and_torque_hms = [data['Hm'] for data in power_and_torque_info]
 power_and_torque_horse_powers = [data['horse_power'] for data in power_and_torque_info]
 # ToDo Храмков 02.11: пока что данные берутся от конфига, но дальше ничего с ними не делается т.к. НЕПОНЯТНО! По идее должны использоваться в сервисе ниже (PowerAndTorqueService)
 
-#таблица коэффициентов полинома
+# таблица коэффициентов полинома
 coefficient_polynom = pd.DataFrame()
-coefficient_polynom['Даннык']=['Коэффициент момент', 'Коэффициент мощность']
-coefficient_polynom['X/5']=[0.0, 0.0]
-coefficient_polynom['X/4']=[6.5177394e-13, -1.7511371e-13]
-coefficient_polynom['X/3']=[-1.035910648521e-08, -1.97857344017e-09]
-coefficient_polynom['X/2']=[0.00003447582159142, 0.0000155372640980185]
-coefficient_polynom['X']=[-0.010124117314029, 0.00599106601989137]
-coefficient_polynom['Собственный коэффициент']=[175.14493655691, 7.45996575251171]
-
+coefficient_polynom['Даннык'] = ['Коэффициент момент', 'Коэффициент мощность']
+coefficient_polynom['X/5'] = [0.0, 0.0]
+coefficient_polynom['X/4'] = [6.5177394e-13, -1.7511371e-13]
+coefficient_polynom['X/3'] = [-1.035910648521e-08, -1.97857344017e-09]
+coefficient_polynom['X/2'] = [0.00003447582159142, 0.0000155372640980185]
+coefficient_polynom['X'] = [-0.010124117314029, 0.00599106601989137]
+coefficient_polynom['Собственный коэффициент'] = [175.14493655691, 7.45996575251171]
 
 power_and_torque_data = PowerAndTorqueService(
     frequency_turns_per_min=list(frequency_turns_per_min)
@@ -131,8 +131,8 @@ air_resistance_service = AirResistanceService(
 dimensions = pd.DataFrame()
 dimensions['car_width'] = ['габаритная ширина автомобиля', air_resistance_service.width]
 dimensions['car_height'] = ['габаритная высота автомобиля', air_resistance_service.height]
-dimensions['streamline_coefficient'] = ['площадь Миделева сечения', air_resistance_service.streamline_coefficient]
-dimensions['midelev_cross_sectional_area'] = ['коэфициент обтекаемости',
+dimensions['streamline_coefficient'] = ['коэфициент обтекаемости', air_resistance_service.streamline_coefficient]
+dimensions['midelev_cross_sectional_area'] = ['площадь Миделева сечения',
                                               air_resistance_service.midelev_cross_sectional_area]
 
 # таблица сопротивления воздуха
@@ -144,8 +144,8 @@ air_resistance['hub3'] = air_resistance_service.air_resistance_hub3
 air_resistance['hub4'] = air_resistance_service.air_resistance_hub4
 air_resistance['hub5'] = air_resistance_service.air_resistance_hub5
 
-#таблица крутящего момента на колесе
-torque_on_wheel_service = TorqueOnWheelService(gear_ratio_info,power_and_torque, kpd)
+# таблица крутящего момента на колесе
+torque_on_wheel_service = TorqueOnWheelService(gear_ratio_info, power_and_torque, kpd)
 torque_on_wheel = pd.DataFrame()
 torque_on_wheel['frequency_turns_per_min'] = frequency_turns_per_min
 torque_on_wheel['hub1'] = torque_on_wheel_service.torque_on_wheel_hub1
@@ -154,6 +154,13 @@ torque_on_wheel['hub3'] = torque_on_wheel_service.torque_on_wheel_hub3
 torque_on_wheel['hub4'] = torque_on_wheel_service.torque_on_wheel_hub4
 torque_on_wheel['hub5'] = torque_on_wheel_service.torque_on_wheel_hub5
 
-#таблица совмещенной мощьности на колесе для каждой передачи и сопротивление воздуха
-
+# таблица совмещенной мощьности на колесе для каждой передачи и сопротивление воздуха
+km_per_hour = config['data']['km_per_hour']
+dependence_torque_on_air_resistance_service = DependenceOfTorqueOnAirResistanceService(km_per_hour, dimensions,
+                                                                                       speed_car,
+                                                                                       coefficient_polynom)
+dependence_torque_on_air_resistance = pd.DateFrame()
+dependence_torque_on_air_resistance['Км/ч'] = km_per_hour
+dependence_torque_on_air_resistance['Сопротивление воздуха'] = dependence_torque_on_air_resistance_service.air_resistance
+dependence_torque_on_air_resistance['Обороты 1 передачи'] = dependence_torque_on_air_resistance_service.turnovers_hub1
 
