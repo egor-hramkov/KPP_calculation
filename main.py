@@ -1,6 +1,6 @@
 import json
+import numpy as np
 import pandas as pd
-from pandas import DataFrame
 
 from services.calculate_KPD_service import CalculateKPDService
 from services.air_resistance_service import AirResistanceService
@@ -13,13 +13,9 @@ from services.torque_on_wheel_service import TorqueOnWheelService
 from services.turnovers_wheel_service import TurnoversWheelsService
 
 # загружаем данные с файла конфига
-from utils import JSONHelper
-
 file_json = open('source/config.json')
 config = json.load(file_json)
 frequency_turns_per_min = config['data']['frequency_turns_per_min']
-all_dataframes: list[DataFrame] = []
-
 # таблица с расчётом полного передаточного числа для каждой передачи
 gear_ratio_service = GearRatioService(config['data']['gear_ratio']['hub_1'], config['data']['gear_ratio']['hub_2'],
                                       config['data']['gear_ratio']['hub_3'], config['data']['gear_ratio']['hub_4'],
@@ -40,8 +36,6 @@ gear_ratio_info['full_gear_ratio'] = [gear_ratio_service.full_gear_ratio_hub1, g
                                       gear_ratio_service.full_gear_ratio_hub3, gear_ratio_service.full_gear_ratio_hub4,
                                       gear_ratio_service.full_gear_ratio_hub5,
                                       gear_ratio_service.full_gear_ratio_reverse, '-', '-', '-']
-gear_ratio_info.name = 'gear_ratio'
-all_dataframes.append(gear_ratio_info)
 
 # формирование данных, где вычислются обороты колёс в минуту относительно кол-ва оборотов двигателя, номера передачи,
 # данных о передаточных числах каждой скорости (таблица из ecxel №2)
@@ -59,8 +53,6 @@ turnovers_wheel['hub2'] = turns_wheels_service.turnovers_wheels_hub2
 turnovers_wheel['hub3'] = turns_wheels_service.turnovers_wheels_hub3
 turnovers_wheel['hub4'] = turns_wheels_service.turnovers_wheels_hub4
 turnovers_wheel['hub5'] = turns_wheels_service.turnovers_wheels_hub5
-turnovers_wheel.name = 'turnovers_wheel'
-all_dataframes.append(turnovers_wheel)
 
 # формирование данных, где вычисляется скорость автомобиля относительно кол-ва оборотов двигателя, номера передачи,
 # данных о передаточных числах каждой скорости и параметрах колёс(таблица из ecxel №5)
@@ -80,8 +72,8 @@ speed_car['hub2'] = speed_car_service.speed_hub2
 speed_car['hub3'] = speed_car_service.speed_hub3
 speed_car['hub4'] = speed_car_service.speed_hub4
 speed_car['hub5'] = speed_car_service.speed_hub5
-speed_car.name = 'speed_car'
-all_dataframes.append(speed_car)
+
+p = 1
 
 # Рассчёт мощности и крутящего момента
 power_and_torque_info = config['data']['engine_performance']['measurements']
@@ -100,9 +92,6 @@ coefficient_polynom['X/2'] = [0.00003447582159142, 0.0000155372640980185]
 coefficient_polynom['X'] = [-0.010124117314029, 0.00599106601989137]
 coefficient_polynom['Собственный коэффициент'] = [175.14493655691, 7.45996575251171]
 
-coefficient_polynom.name = 'coefficient_polynom'
-all_dataframes.append(coefficient_polynom)
-
 power_and_torque_data = PowerAndTorqueService(
     frequency_turns_per_min=list(frequency_turns_per_min)
 )
@@ -110,9 +99,6 @@ power_and_torque = pd.DataFrame()
 power_and_torque['frequency'] = power_and_torque_data.frequency_turns_per_min
 power_and_torque['torques'] = power_and_torque_data.torques
 power_and_torque['powers'] = power_and_torque_data.powers
-
-power_and_torque.name = 'power_and_torque'
-all_dataframes.append(power_and_torque)
 
 # Рассчёт КПД трансмиссии
 number_of_spur_gears = config['data']['number_of_spur_gears']
@@ -130,9 +116,6 @@ kpd['number_of_bevel_gears'] = kpd_data.number_of_bevel_gears
 kpd['number_of_cardan_gears'] = kpd_data.number_of_cardan_gears
 kpd['KPD'] = kpd_data.KPD
 
-kpd.name = 'kpd'
-all_dataframes.append(kpd)
-
 # Таблица габаритных размеров
 air_resistance_service = AirResistanceService(
     config['data']['dimensions']['car_width'],
@@ -148,9 +131,6 @@ dimensions['streamline_coefficient'] = ['коэфициент обтекаемо
 dimensions['midelev_cross_sectional_area'] = ['площадь Миделева сечения',
                                               air_resistance_service.midelev_cross_sectional_area]
 
-dimensions.name = 'dimensions'
-all_dataframes.append(dimensions)
-
 # таблица сопротивления воздуха
 air_resistance = pd.DataFrame()
 air_resistance['frequency'] = frequency_turns_per_min
@@ -159,10 +139,6 @@ air_resistance['hub2'] = air_resistance_service.air_resistance_hub2
 air_resistance['hub3'] = air_resistance_service.air_resistance_hub3
 air_resistance['hub4'] = air_resistance_service.air_resistance_hub4
 air_resistance['hub5'] = air_resistance_service.air_resistance_hub5
-
-
-air_resistance.name = 'air_resistance'
-all_dataframes.append(air_resistance)
 
 # таблица крутящего момента на колесе
 torque_on_wheel_service = TorqueOnWheelService(gear_ratio_info, power_and_torque, kpd)
@@ -173,9 +149,6 @@ torque_on_wheel['hub2'] = torque_on_wheel_service.torque_on_wheel_hub2
 torque_on_wheel['hub3'] = torque_on_wheel_service.torque_on_wheel_hub3
 torque_on_wheel['hub4'] = torque_on_wheel_service.torque_on_wheel_hub4
 torque_on_wheel['hub5'] = torque_on_wheel_service.torque_on_wheel_hub5
-
-torque_on_wheel.name = 'torque_on_wheel'
-all_dataframes.append(torque_on_wheel)
 
 # таблица совмещенной мощьности на колесе для каждой передачи и сопротивление воздуха
 km_per_hour = config['data']['km_per_hour']
@@ -199,9 +172,6 @@ dependence_torque_on_air_resistance['Крутящий момент 4'] = depende
 dependence_torque_on_air_resistance['Обороты 5 передачи'] = dependence_torque_on_air_resistance_service.turnovers_hub5
 dependence_torque_on_air_resistance['Крутящий момент 5'] = dependence_torque_on_air_resistance_service.torque_hub5
 
-dependence_torque_on_air_resistance.name = 'dependence_torque_on_air_resistance'
-all_dataframes.append(dependence_torque_on_air_resistance)
-
 # таблица масс автомобиля
 car_weight = config['data']['weights']['car_weight']
 full_mass = config['data']['weights']['full_mass']
@@ -212,9 +182,6 @@ mass_table['Снаряжённая масса'] = [car_weight + 70]
 mass_table['Полная масса'] = [full_mass]
 mass_table['Масса полезного груза'] = [full_mass - (car_weight + 70) - (70 * (passenger_seats - 1))]
 mass_table['Число посадочных мест'] = [passenger_seats]
-
-mass_table.name = 'mass_table'
-all_dataframes.append(mass_table)
 
 # таблица коэффициент сопротивления кочению колеса
 coefficient_rolling_resistance_wheel = pd.DataFrame()
@@ -229,9 +196,6 @@ coefficient_rolling_resistance_wheel['Погодные условия'] = ['1.Х
 coefficient_rolling_resistance_wheel['Минимум'] = [0.008, 0.015, 0.015, 0.02, 0.025, 0.035, 0.025, 0.05]
 coefficient_rolling_resistance_wheel['Максимум'] = [0.015, 0.03, 0.02, 0.025, 0.03, 0.05, 0.035, 0.15]
 
-coefficient_rolling_resistance_wheel.name = 'coefficient_rolling_resistance_wheel'
-all_dataframes.append(coefficient_rolling_resistance_wheel)
-
 # табл коэффициента влияния скорости в км/ч
 coefficient_influence_speed = pd.DataFrame()
 coefficient_influence_speed['Тип автомобиля'] = ['Легковой', 'Грузовой']
@@ -239,9 +203,6 @@ coefficient_influence_speed['Км/час минимум'] = [0.00004, 0.00002]
 coefficient_influence_speed['Км/час максимум'] = [0.00005, 0.00003]
 coefficient_influence_speed['М/с минимум'] = [0.00051, 0.00026]
 coefficient_influence_speed['М/с максимум'] = [0.00065, 0.00039]
-
-coefficient_influence_speed.name = 'coefficient_influence_speed'
-all_dataframes.append(coefficient_influence_speed)
 
 # таблица коэффициент сопротивления качению
 rolling_resistance_service = RollingResistanceService(km_per_hour, coefficient_rolling_resistance_wheel, mass_table,
@@ -259,7 +220,26 @@ rolling_resistance[
 rolling_resistance['7.Сухая укатанная грунтовая дорога'] = rolling_resistance_service.coef_rolling_resistance_type7
 rolling_resistance['8.Мокрая укатанная грунтовая дорога'] = rolling_resistance_service.coef_rolling_resistance_type8
 
-rolling_resistance.name = 'rolling_resistance'
-all_dataframes.append(rolling_resistance)
 
-response = JSONHelper().dataframes_to_dict(all_dataframes)
+# таблица суммарной силы сопротивлению движения
+total_resistance_force_movement = pd.DataFrame()
+total_resistance_force_movement['Угол %'] = [-20,-15,-10,-5,0,5,10,15,20]
+total_resistance_force_movement['Сила подъёма'] = [-700,-525,-350,-175,0,175,350,525,700]
+
+
+#суммарная сила на колесе в идиальных условиях
+total_force_wheel_ideal_conditions_service = TotalForceWheelIdealConditionsService(km_per_hour, rolling_resistance, speed_car, coefficient_polynom,dependence_torque_on_air_resistance)
+total_force_wheel_ideal_conditions = pd.DataFrame()
+total_force_wheel_ideal_conditions['Км/ч'] = total_force_wheel_ideal_conditions_service.km_per_hour_array
+total_force_wheel_ideal_conditions['Обороты 1 передача'] = total_force_wheel_ideal_conditions_service.turnovers_hub1
+total_force_wheel_ideal_conditions['Крутящий момент 1 передача'] = total_force_wheel_ideal_conditions_service.force_on_wheel_hub1
+total_force_wheel_ideal_conditions['Обороты 2 передача'] = total_force_wheel_ideal_conditions_service.turnovers_hub2
+total_force_wheel_ideal_conditions['Крутящий момент 2 передача'] = total_force_wheel_ideal_conditions_service.force_on_wheel_hub2
+total_force_wheel_ideal_conditions['Обороты 3 передача'] = total_force_wheel_ideal_conditions_service.turnovers_hub3
+total_force_wheel_ideal_conditions['Крутящий момент 3 передача'] = total_force_wheel_ideal_conditions_service.force_on_wheel_hub3
+total_force_wheel_ideal_conditions['Обороты 4 передача'] = total_force_wheel_ideal_conditions_service.turnovers_hub4
+total_force_wheel_ideal_conditions['Крутящий момент 4 передача'] = total_force_wheel_ideal_conditions_service.force_on_wheel_hub4
+total_force_wheel_ideal_conditions['Обороты 5 передача'] = total_force_wheel_ideal_conditions_service.turnovers_hub5
+total_force_wheel_ideal_conditions['Крутящий момент 5 передача'] = total_force_wheel_ideal_conditions_service.force_on_wheel_hub5
+
+p = 1

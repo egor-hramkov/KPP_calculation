@@ -58,7 +58,7 @@ class RollingResistanceService:
     def __calculate_coef_rolling_resistance(self, coef_rolling_resistance_wheel):
         coefs=[]
         for speed in self.km_per_hour_array:
-            coef=coef_rolling_resistance_wheel*(1+self.coefficient_influence_speed_truck*(speed*2))*self.full_mass
+            coef=coef_rolling_resistance_wheel*(1+self.coefficient_influence_speed_truck*(speed**2))*self.full_mass
 
             coefs.append(coef)
         return coefs
