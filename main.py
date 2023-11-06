@@ -120,14 +120,14 @@ power_and_torque_horse_powers = [data['horse_power'] for data in power_and_torqu
 
 # таблица коэффициентов полинома
 coefficient_polynom = pd.DataFrame()
-coefficient_polynom['Даннык'] = ['Коэффициент момент', 'Коэффициент мощность']
+coefficient_polynom['Данные'] = ['Коэффициент момент', 'Коэффициент мощность']
 coefficient_polynom['X/5'] = [0.0, 0.0]
 coefficient_polynom['X/4'] = [6.5177394e-13, -1.7511371e-13]
 coefficient_polynom['X/3'] = [-1.035910648521e-08, -1.97857344017e-09]
 coefficient_polynom['X/2'] = [0.00003447582159142, 0.0000155372640980185]
 coefficient_polynom['X'] = [-0.010124117314029, 0.00599106601989137]
 coefficient_polynom['Собственный коэффициент'] = [175.14493655691, 7.45996575251171]
-
+# ToDo Храмков ГРАФИКИ С ПОЛИНОМАМИ ТОЖЕ ФИГНЯ КАКАЯ ТО - обсудить
 coefficient_polynom.name = 'coefficient_polynom'
 all_dataframes.append(coefficient_polynom)
 
@@ -193,7 +193,7 @@ air_resistance.name = 'air_resistance'
 all_dataframes.append(air_resistance)
 
 # таблица крутящего момента на колесе
-torque_on_wheel_service = TorqueOnWheelService(gear_ratio_info, power_and_torque, kpd)
+torque_on_wheel_service = TorqueOnWheelService(gear_ratio_info, power_and_torque, kpd, frequency_turns_per_min)
 torque_on_wheel = pd.DataFrame()
 torque_on_wheel['frequency_turns_per_min'] = frequency_turns_per_min
 torque_on_wheel['hub1'] = torque_on_wheel_service.torque_on_wheel_hub1
@@ -316,4 +316,4 @@ total_force_wheel_ideal_conditions['Обороты 5 передача'] = total_
 total_force_wheel_ideal_conditions['Крутящий момент 5 передача'] = total_force_wheel_ideal_conditions_service.force_on_wheel_hub5
 total_force_wheel_ideal_conditions.name='total_force_wheel_ideal_conditions'
 all_dataframes.append(total_force_wheel_ideal_conditions)
-response = JSONHelper().dataframes_to_json(all_dataframes)
+response = JSONHelper().dataframes_to_dict(all_dataframes)
