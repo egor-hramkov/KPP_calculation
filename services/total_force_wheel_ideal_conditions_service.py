@@ -14,6 +14,8 @@ class TotalForceWheelIdealConditionsService:
     speed_car_dataset: DataFrame
     polynom_dataset: DataFrame
     dependence_torque_on_air_resistance_dataset: DataFrame
+    gear_ratio_dataset:DataFrame
+    kpd_dataset:DataFrame
 
     def __post_init__(self):
         self.rolling_resistance_array = self.rolling_resistance_dataset[
@@ -36,6 +38,16 @@ class TotalForceWheelIdealConditionsService:
         self.coef_moment_2 = self.polynom_dataset['X/2'][0]
         self.coef_moment_1 = self.polynom_dataset['X'][0]
         self.coef_moment_1 = self.polynom_dataset['X'][0]
+        self.full_gear_ratio_hub1 = self.gear_ratio_dataset['full_gear_ratio'][0]
+        self.full_gear_ratio_hub2 = self.gear_ratio_dataset['full_gear_ratio'][1]
+        self.full_gear_ratio_hub3 = self.gear_ratio_dataset['full_gear_ratio'][2]
+        self.full_gear_ratio_hub4 = self.gear_ratio_dataset['full_gear_ratio'][3]
+        self.full_gear_ratio_hub5 = self.gear_ratio_dataset['full_gear_ratio'][4]
+        self.kpd_hub1 = self.kpd_dataset['КПД'][0]
+        self.kpd_hub2 = self.kpd_dataset['КПД'][1]
+        self.kpd_hub3 = self.kpd_dataset['КПД'][2]
+        self.kpd_hub4 = self.kpd_dataset['КПД'][3]
+        self.kpd_hub5 = self.kpd_dataset['КПД'][4]
         self.air_resistance_array = self.dependence_torque_on_air_resistance_dataset['Сопротивление воздуха'].to_numpy()
         self.coef_self = self.polynom_dataset['Собственный коэффициент'][0]
         self.show_graphic()
@@ -62,23 +74,23 @@ class TotalForceWheelIdealConditionsService:
 
     @property
     def force_on_wheel_hub1(self):
-        return self.__calculate_force_on_wheel(self.turnovers_hub1)
+        return self.__calculate_force_on_wheel(self.turnovers_hub1, self.full_gear_ratio_hub1, self.kpd_hub1)
 
     @property
     def force_on_wheel_hub2(self):
-        return self.__calculate_force_on_wheel(self.turnovers_hub2)
+        return self.__calculate_force_on_wheel(self.turnovers_hub2, self.full_gear_ratio_hub2, self.kpd_hub2)
 
     @property
     def force_on_wheel_hub3(self):
-        return self.__calculate_force_on_wheel(self.turnovers_hub3)
+        return self.__calculate_force_on_wheel(self.turnovers_hub3, self.full_gear_ratio_hub3, self.kpd_hub3)
 
     @property
     def force_on_wheel_hub4(self):
-        return self.__calculate_force_on_wheel(self.turnovers_hub4)
+        return self.__calculate_force_on_wheel(self.turnovers_hub4, self.full_gear_ratio_hub4, self.kpd_hub4)
 
     @property
     def force_on_wheel_hub5(self):
-        return self.__calculate_force_on_wheel(self.turnovers_hub5)
+        return self.__calculate_force_on_wheel(self.turnovers_hub5, self.full_gear_ratio_hub5, self.kpd_hub5)
 
     def __calculate_turnovers_hub(self, min_speed, max_speed, min_speed_hub):
         turnovers = []
@@ -89,15 +101,15 @@ class TotalForceWheelIdealConditionsService:
                 turnovers.append('-')
         return turnovers
 
-    def __calculate_force_on_wheel(self, turnovers_hub):
+    def __calculate_force_on_wheel(self, turnovers_hub, full_gear_ratio_hub, kpd_hub):
         force_on_wheel = []
-        for turnovers in turnovers_hub:
+        for turnovers, air_resistance in zip(turnovers_hub, self.air_resistance_array):
             if turnovers == '-':
                 force_on_wheel.append('-')
             else:
-                force = (self.coef_moment_5 * (turnovers ** 5) + self.coef_moment_4 * (
+                force = ((self.coef_moment_5 * (turnovers ** 5) + self.coef_moment_4 * (
                             turnovers ** 4) + self.coef_moment_3 * (turnovers ** 3) + self.coef_moment_2 * (
-                                     turnovers ** 2) + self.coef_moment_1 * turnovers + self.coef_self)
+                                     turnovers ** 2) + self.coef_moment_1 * turnovers + self.coef_self)*full_gear_ratio_hub*kpd_hub)-air_resistance
                 force_on_wheel.append(force)
         return force_on_wheel
 

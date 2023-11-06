@@ -304,7 +304,7 @@ all_dataframes.append(total_resistance_force_movement)
 
 
 #суммарная сила на колесе в идиальных условиях
-total_force_wheel_ideal_conditions_service = TotalForceWheelIdealConditionsService(km_per_hour, rolling_resistance, speed_car, coefficient_polynom,dependence_torque_on_air_resistance)
+total_force_wheel_ideal_conditions_service = TotalForceWheelIdealConditionsService(km_per_hour, rolling_resistance, speed_car, coefficient_polynom,dependence_torque_on_air_resistance, gear_ratio_info,kpd)
 total_force_wheel_ideal_conditions = pd.DataFrame()
 total_force_wheel_ideal_conditions['Км/ч'] = total_force_wheel_ideal_conditions_service.km_per_hour_array
 total_force_wheel_ideal_conditions['Обороты 1 передача'] = total_force_wheel_ideal_conditions_service.turnovers_hub1
@@ -327,6 +327,10 @@ dynamic_factor_service = DynamicFactorService(km_per_hour, speed_car, coefficien
 dynamic_factor = pd.DataFrame()
 dynamic_factor['Км/ч'] = dynamic_factor_service.km_per_hour_array
 dynamic_factor['Обороты 1 передача'] = dynamic_factor_service.turnovers_hub1
+dynamic_factor['Крутящий момент 1 передача'] = dynamic_factor_service.torque_hub1
+
+#коэффициент влияния мощьности на расход топлива
+influence_power_on_fuel_consumption = pd.DataFrame()
 
 
 coefficients_of_influence_data = CoefficientsInfluence(frequency_turns_per_min)

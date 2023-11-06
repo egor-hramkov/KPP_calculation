@@ -28,6 +28,7 @@ class DynamicFactorService:
         self.coef_moment_1 = self.polynom_dataset['X'][0]
         self.coef_self = self.polynom_dataset['Собственный коэффициент'][0]
         self.dynamic_radius = self.wheel_info_dataset['Ширина профиля'][3]
+        self.air_resistance_array = self.dependence_torque_on_air_resistance_dataset['Сопротивление воздуха']
 
     @property
     def turnovers_hub1(self):
@@ -51,23 +52,44 @@ class DynamicFactorService:
 
     @property
     def torque_hub1(self):
+        return self.__calculate_torque_hub(self.turnovers_hub1)
+
+    @property
+    def torque_hub2(self):
+        return self.__calculate_torque_hub(self.turnovers_hub2)
+
+    @property
+    def torque_hub3(self):
+        return self.__calculate_torque_hub(self.turnovers_hub3)
+
+    @property
+    def torque_hub4(self):
+        return self.__calculate_torque_hub(self.turnovers_hub4)
+
+    @property
+    def torque_hub5(self):
+        return self.__calculate_torque_hub(self.turnovers_hub5)
+
+    @property
+    def fuel_hub1(self):
         return 1
 
     @property
-    def torque_hub1(self):
+    def fuel_hub2(self):
         return 1
 
     @property
-    def torque_hub1(self):
+    def fuel_hub3(self):
         return 1
 
     @property
-    def torque_hub1(self):
+    def fuel_hub4(self):
         return 1
 
     @property
-    def torque_hub1(self):
+    def fuel_hub5(self):
         return 1
+
     def __calculate_turnovers_hub(self, min_speed, max_speed, min_speed_hub):
         turnovers=[]
         for speed in self.km_per_hour_array:
@@ -75,3 +97,18 @@ class DynamicFactorService:
                 turnovers.append((self.min_frequency/min_speed_hub)*speed)
             else:
                 turnovers.append('-')
+
+    def __calculate_torque_hub(self, turnovers_hub):
+        torques=[]
+        for turnover, air_resistance in zip(turnovers_hub,self.air_resistance_array):
+            if air_resistance=='-':
+                torques.append('-')
+            else:
+                torque = ((self.coef_moment_5*(turnover**5)+self.coef_moment_4*(turnover**4)+self.coef_moment_3*(turnover**3)+self.coef_moment_2*(turnover**2)+self.coef_moment_1*turnover+self.coef_self)/self.dynamic_radius)-air_resistance
+                torques.append(torque)
+        return torques
+
+    def __calculate_fuel(self, turnovers_hub):
+        fuels = []
+        for turnover, air_resistance in zip(turnovers_hub, self.air_resistance_array):
+            turnover = (1.25-0.99*(turnover))
