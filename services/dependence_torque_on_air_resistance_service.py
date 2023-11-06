@@ -4,6 +4,8 @@ import numpy
 from matplotlib import pyplot as plt
 from pandas import DataFrame
 
+from utils.table_helper import TableHelper
+
 
 @dataclass
 class DependenceOfTorqueOnAirResistanceService:
@@ -120,22 +122,19 @@ class DependenceOfTorqueOnAirResistanceService:
         plt.ylabel("Н/м")
         plt.title('МКР и сопротивление воздуха от скорости')
 
-        #plt.plot(self.km_per_hour_array, self.__remove_nan_values(self.torque_hub1), label='МКР 1 передачи')
-        #plt.plot(self.km_per_hour_array, self.__remove_nan_values(self.torque_hub2), label='МКР 2 передачи')
-        #plt.plot(self.km_per_hour_array, self.__remove_nan_values(self.torque_hub3), label='МКР 3 передачи')
-        #plt.plot(self.km_per_hour_array, self.__remove_nan_values(self.torque_hub4), label='МКР 4 передачи')
-        #plt.plot(self.km_per_hour_array, self.__remove_nan_values(self.torque_hub5), label='МКР 5 передачи')
-        #plt.plot(self.km_per_hour_array, self.air_resistance, label='Сопр. воздуха')
+        torque_hub1, km_per_hour_for_1_tier = TableHelper().prepare_data_y_for_x(self.torque_hub1, self.km_per_hour_array)
+        torque_hub2, km_per_hour_for_2_tier = TableHelper().prepare_data_y_for_x(self.torque_hub2, self.km_per_hour_array)
+        torque_hub3, km_per_hour_for_3_tier = TableHelper().prepare_data_y_for_x(self.torque_hub3, self.km_per_hour_array)
+        torque_hub4, km_per_hour_for_4_tier = TableHelper().prepare_data_y_for_x(self.torque_hub4, self.km_per_hour_array)
+        torque_hub5, km_per_hour_for_5_tier = TableHelper().prepare_data_y_for_x(self.torque_hub5, self.km_per_hour_array)
+
+        plt.plot(km_per_hour_for_1_tier, torque_hub1, label='МКР 1 передачи')
+        plt.plot(km_per_hour_for_2_tier, torque_hub2, label='МКР 2 передачи')
+        plt.plot(km_per_hour_for_3_tier, torque_hub3, label='МКР 3 передачи')
+        plt.plot(km_per_hour_for_4_tier, torque_hub4, label='МКР 4 передачи')
+        plt.plot(km_per_hour_for_5_tier, torque_hub5, label='МКР 5 передачи')
+        plt.plot(self.km_per_hour_array, self.air_resistance, label='Сопр. воздуха')
         plt.legend()
         plt.grid(axis='y')
         plt.show()
 
-    def __remove_nan_values(self, lst: list) -> list:
-        result = []
-        for item in lst:
-            try:
-                float(item)
-                result.append(item)
-            except ValueError:
-                continue
-        return result

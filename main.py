@@ -16,7 +16,7 @@ from services.total_resistance_force_movement_service import TotalResistanceForc
 from services.turnovers_wheel_service import TurnoversWheelsService
 
 # загружаем данные с файла конфига
-from utils import JSONHelper
+from utils.json_helper import JSONHelper
 
 file_json = open('source/config.json')
 config = json.load(file_json)
@@ -154,10 +154,10 @@ kpd_data = CalculateKPDService(
     number_of_bevel_gears=number_of_bevel_gears,
     number_of_cardan_gears=number_of_cardan_gears
 )
-kpd['number_of_spur_gears'] = kpd_data.number_of_spur_gears
-kpd['number_of_bevel_gears'] = kpd_data.number_of_bevel_gears
-kpd['number_of_cardan_gears'] = kpd_data.number_of_cardan_gears
-kpd['KPD'] = kpd_data.KPD
+kpd['число цилиндр. Передач'] = kpd_data.number_of_spur_gears
+kpd['число конических передач'] = kpd_data.number_of_bevel_gears
+kpd['число крестовин кардана'] = kpd_data.number_of_cardan_gears
+kpd['КПД'] = kpd_data.KPD
 
 kpd.name = 'kpd'
 all_dataframes.append(kpd)
