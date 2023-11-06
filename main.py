@@ -65,6 +65,29 @@ turnovers_wheel.name = 'turnovers_wheel'
 all_dataframes.append(turnovers_wheel)
 
 #таблица размерности шин
+width_wheel = config['data']['wheel_info']['profile_width']
+height_wheel = config['data']['wheel_info']['profile_height']
+diameter_wheel = config['data']['wheel_info']['diameter']
+wheel_info_table = pd.DataFrame()
+wheel_info_table['Параметр'] = ['Размер колес','Номинальный радиус (м)','Статический радиус','Динамический радиус']
+nom_radius=0.0254*(diameter_wheel/2)+(width_wheel/1000)*(height_wheel/100)
+if height_wheel >= 90:
+     tire_crumpling_ratio = 0.8
+elif height_wheel <= 50:
+    tire_crumpling_ratio = 0.85
+else:
+    tire_crumpling_ratio = 0.814285714
+stat_radius = 0.0254*(diameter_wheel/2)+(width_wheel/1000)*(height_wheel/100)*tire_crumpling_ratio
+dynamic_radius = nom_radius - ((nom_radius-stat_radius)/3)
+wheel_info_table['Ширина профиля']=[width_wheel, nom_radius, stat_radius, dynamic_radius]
+wheel_info_table['Профиль шины']=[height_wheel, '-', '-', '-']
+wheel_info_table['Диаметр шины']=[diameter_wheel, '-','-','-']
+wheel_info_table.name='wheel_info_table'
+all_dataframes.append(wheel_info_table)
+
+
+
+
 
 
 # формирование данных, где вычисляется скорость автомобиля относительно кол-ва оборотов двигателя, номера передачи,
