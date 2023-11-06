@@ -5,6 +5,7 @@ from pandas import DataFrame
 from services.calculate_KPD_service import CalculateKPDService
 from services.air_resistance_service import AirResistanceService
 from services.dependence_torque_on_air_resistance_service import DependenceOfTorqueOnAirResistanceService
+from services.dynamic_factor_service import DynamicFactorService
 from services.gear_ratio_service import GearRatioService
 from services.power_and_torque import PowerAndTorqueService
 from services.rolling_resistance_service import RollingResistanceService
@@ -317,3 +318,10 @@ total_force_wheel_ideal_conditions['Крутящий момент 5 переда
 total_force_wheel_ideal_conditions.name='total_force_wheel_ideal_conditions'
 all_dataframes.append(total_force_wheel_ideal_conditions)
 response = JSONHelper().dataframes_to_dict(all_dataframes)
+
+# таблица расчёта динамического фактора
+dynamic_factor_service = DynamicFactorService(km_per_hour, speed_car, coefficient_polynom, wheel_info_table,
+                                              dependence_torque_on_air_resistance)
+dynamic_factor = pd.DataFrame()
+dynamic_factor['Км/ч'] = dynamic_factor_service.km_per_hour_array
+dynamic_factor['Обороты 1 передача'] = dynamic_factor_service.turnovers_hub1
