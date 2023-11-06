@@ -10,6 +10,8 @@ from services.power_and_torque import PowerAndTorqueService
 from services.rolling_resistance_service import RollingResistanceService
 from services.speed_car_service import SpeedCarService
 from services.torque_on_wheel_service import TorqueOnWheelService
+from services.total_force_wheel_ideal_conditions_service import TotalForceWheelIdealConditionsService
+from services.total_resistance_force_movement_service import TotalResistanceForceMovementService
 from services.turnovers_wheel_service import TurnoversWheelsService
 
 # загружаем данные с файла конфига
@@ -61,6 +63,9 @@ turnovers_wheel['hub4'] = turns_wheels_service.turnovers_wheels_hub4
 turnovers_wheel['hub5'] = turns_wheels_service.turnovers_wheels_hub5
 turnovers_wheel.name = 'turnovers_wheel'
 all_dataframes.append(turnovers_wheel)
+
+#таблица размерности шин
+
 
 # формирование данных, где вычисляется скорость автомобиля относительно кол-ва оборотов двигателя, номера передачи,
 # данных о передаточных числах каждой скорости и параметрах колёс(таблица из ecxel №5)
@@ -264,9 +269,12 @@ all_dataframes.append(rolling_resistance)
 
 
 # таблица суммарной силы сопротивлению движения
+total_resistance_force_movement_service = TotalResistanceForceMovementService([-20,-15,-10,-5,0,5,10,15,20], full_mass)
 total_resistance_force_movement = pd.DataFrame()
-total_resistance_force_movement['Угол %'] = [-20,-15,-10,-5,0,5,10,15,20]
-total_resistance_force_movement['Сила подъёма'] = [-700,-525,-350,-175,0,175,350,525,700]
+total_resistance_force_movement['Угол %'] = total_resistance_force_movement_service.angle_array
+total_resistance_force_movement['Сила подъёма'] = total_resistance_force_movement_service.lifting_force
+total_resistance_force_movement.name='total_resistance_force_movement'
+all_dataframes.append(total_resistance_force_movement)
 
 
 #суммарная сила на колесе в идиальных условиях
@@ -283,5 +291,6 @@ total_force_wheel_ideal_conditions['Обороты 4 передача'] = total_
 total_force_wheel_ideal_conditions['Крутящий момент 4 передача'] = total_force_wheel_ideal_conditions_service.force_on_wheel_hub4
 total_force_wheel_ideal_conditions['Обороты 5 передача'] = total_force_wheel_ideal_conditions_service.turnovers_hub5
 total_force_wheel_ideal_conditions['Крутящий момент 5 передача'] = total_force_wheel_ideal_conditions_service.force_on_wheel_hub5
-
+total_force_wheel_ideal_conditions.name='total_force_wheel_ideal_conditions'
+all_dataframes.append(total_force_wheel_ideal_conditions)
 response = JSONHelper().dataframes_to_json(all_dataframes)
