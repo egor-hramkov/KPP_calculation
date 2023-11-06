@@ -15,6 +15,7 @@ class DynamicFactorService:
 
     def __post_init__(self):
         self.min_frequency = self.speed_car_dataset['frequency'][0]
+        self.max_frequency = self.speed_car_dataset['frequency'][-1]
         self.min_speed_hub1 = self.speed_car_dataset['hub1'][0]
         self.min_speed_hub2 = self.speed_car_dataset['hub2'][0]
         self.min_speed_hub3 = self.speed_car_dataset['hub3'][0]
@@ -29,6 +30,7 @@ class DynamicFactorService:
         self.coef_self = self.polynom_dataset['Собственный коэффициент'][0]
         self.dynamic_radius = self.wheel_info_dataset['Ширина профиля'][3]
         self.air_resistance_array = self.dependence_torque_on_air_resistance_dataset['Сопротивление воздуха']
+        self.air
 
     @property
     def turnovers_hub1(self):
@@ -111,4 +113,4 @@ class DynamicFactorService:
     def __calculate_fuel(self, turnovers_hub):
         fuels = []
         for turnover, air_resistance in zip(turnovers_hub, self.air_resistance_array):
-            turnover = (1.25-0.99*(turnover))
+            turnover = (1.25-0.99*(turnover/self.max_frequency)+0.98*((turnover/self.max_frequency)**2)-0.24*((turnover/self.max_frequency)**3))*(3.27-8.22*air_resistance)

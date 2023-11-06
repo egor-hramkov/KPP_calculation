@@ -307,6 +307,7 @@ all_dataframes.append(total_resistance_force_movement)
 total_force_wheel_ideal_conditions_service = TotalForceWheelIdealConditionsService(km_per_hour, rolling_resistance, speed_car, coefficient_polynom,dependence_torque_on_air_resistance, gear_ratio_info,kpd)
 total_force_wheel_ideal_conditions = pd.DataFrame()
 total_force_wheel_ideal_conditions['Км/ч'] = total_force_wheel_ideal_conditions_service.km_per_hour_array
+total_force_wheel_ideal_conditions['Сумма сопротивления'] = total_force_wheel_ideal_conditions_service.air_resistance_array
 total_force_wheel_ideal_conditions['Обороты 1 передача'] = total_force_wheel_ideal_conditions_service.turnovers_hub1
 total_force_wheel_ideal_conditions['Крутящий момент 1 передача'] = total_force_wheel_ideal_conditions_service.force_on_wheel_hub1
 total_force_wheel_ideal_conditions['Обороты 2 передача'] = total_force_wheel_ideal_conditions_service.turnovers_hub2
