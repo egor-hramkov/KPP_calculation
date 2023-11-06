@@ -20,11 +20,11 @@ class TorqueOnWheelService:
         self.full_gear_ratio_hub5 = self.gear_ratios_dataset['full_gear_ratio'][4]
         self.full_gear_ratio_reverse = self.gear_ratios_dataset['full_gear_ratio'][5]
         self.hm_per_turns_engine = self.power_and_torque_dataset['torques'].to_numpy()
-        self.kpd_hub1 = self.kpd_dataset['KPD'][0]
-        self.kpd_hub2 = self.kpd_dataset['KPD'][1]
-        self.kpd_hub3 = self.kpd_dataset['KPD'][2]
-        self.kpd_hub4 = self.kpd_dataset['KPD'][3]
-        self.kpd_hub5 = self.kpd_dataset['KPD'][4]
+        self.kpd_hub1 = self.kpd_dataset['КПД'][0]
+        self.kpd_hub2 = self.kpd_dataset['КПД'][1]
+        self.kpd_hub3 = self.kpd_dataset['КПД'][2]
+        self.kpd_hub4 = self.kpd_dataset['КПД'][3]
+        self.kpd_hub5 = self.kpd_dataset['КПД'][4]
         self.show_graphic()
 
     @property
