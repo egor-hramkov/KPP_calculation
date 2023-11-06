@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 import numpy
+from matplotlib import pyplot as plt
 from pandas import DataFrame
 
 
@@ -40,6 +41,7 @@ class DependenceOfTorqueOnAirResistanceService:
         self.kpd_hub3 = self.kpd_dataset['KPD'][2]
         self.kpd_hub4 = self.kpd_dataset['KPD'][3]
         self.kpd_hub5 = self.kpd_dataset['KPD'][4]
+        self.show_graphic()
 
     @property
     def air_resistance(self):
@@ -67,23 +69,23 @@ class DependenceOfTorqueOnAirResistanceService:
 
     @property
     def torque_hub1(self):
-        return self.__calculate_torque_hub(self.turnovers_hub1,self.full_gear_ratio_hub1,self.kpd_hub1)
+        return self.__calculate_torque_hub(self.turnovers_hub1, self.full_gear_ratio_hub1, self.kpd_hub1)
 
     @property
     def torque_hub2(self):
-        return self.__calculate_torque_hub(self.turnovers_hub2,self.full_gear_ratio_hub2,self.kpd_hub2)
+        return self.__calculate_torque_hub(self.turnovers_hub2, self.full_gear_ratio_hub2, self.kpd_hub2)
 
     @property
     def torque_hub3(self):
-        return self.__calculate_torque_hub(self.turnovers_hub3,self.full_gear_ratio_hub3,self.kpd_hub3)
+        return self.__calculate_torque_hub(self.turnovers_hub3, self.full_gear_ratio_hub3, self.kpd_hub3)
 
     @property
     def torque_hub4(self):
-        return self.__calculate_torque_hub(self.turnovers_hub4,self.full_gear_ratio_hub4,self.kpd_hub4)
+        return self.__calculate_torque_hub(self.turnovers_hub4, self.full_gear_ratio_hub4, self.kpd_hub4)
 
     @property
     def torque_hub5(self):
-        return self.__calculate_torque_hub(self.turnovers_hub5,self.full_gear_ratio_hub5,self.kpd_hub5)
+        return self.__calculate_torque_hub(self.turnovers_hub5, self.full_gear_ratio_hub5, self.kpd_hub5)
 
     def __calculate_air_resistance(self):
         air_resistance = []
@@ -107,7 +109,33 @@ class DependenceOfTorqueOnAirResistanceService:
                 torques.append('-')
             else:
                 torque = ((self.coef_moment_5 * (turnover ** 5)) + (self.coef_moment_4 * (turnover ** 4)) + (
-                            self.coef_moment_3 * (turnover ** 3)) + (self.coef_moment_2 * (turnover ** 2)) + (
-                                      self.coef_moment_1 * turnover) + self.coef_self) * full_gear_ratio_hub * kpd_hub
+                        self.coef_moment_3 * (turnover ** 3)) + (self.coef_moment_2 * (turnover ** 2)) + (
+                                  self.coef_moment_1 * turnover) + self.coef_self) * full_gear_ratio_hub * kpd_hub
                 torques.append(torque)
         return torques
+
+    def show_graphic(self):
+        """Построение графика МКР и сопротивление воздуха от скорости"""
+        plt.xlabel("Скорость км/ч")
+        plt.ylabel("Н/м")
+        plt.title('МКР и сопротивление воздуха от скорости')
+
+        #plt.plot(self.km_per_hour_array, self.__remove_nan_values(self.torque_hub1), label='МКР 1 передачи')
+        #plt.plot(self.km_per_hour_array, self.__remove_nan_values(self.torque_hub2), label='МКР 2 передачи')
+        #plt.plot(self.km_per_hour_array, self.__remove_nan_values(self.torque_hub3), label='МКР 3 передачи')
+        #plt.plot(self.km_per_hour_array, self.__remove_nan_values(self.torque_hub4), label='МКР 4 передачи')
+        #plt.plot(self.km_per_hour_array, self.__remove_nan_values(self.torque_hub5), label='МКР 5 передачи')
+        #plt.plot(self.km_per_hour_array, self.air_resistance, label='Сопр. воздуха')
+        plt.legend()
+        plt.grid(axis='y')
+        plt.show()
+
+    def __remove_nan_values(self, lst: list) -> list:
+        result = []
+        for item in lst:
+            try:
+                float(item)
+                result.append(item)
+            except ValueError:
+                continue
+        return result

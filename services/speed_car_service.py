@@ -75,6 +75,7 @@ class SpeedCarService:
         """Построение графика скорости км/ч от оборотов двигателя"""
         plt.ylabel("Скорость км/ч")
         plt.xlabel("Частота, об/мин")
+        plt.title('Скорость км/ч от оборотов двигетеля')
         plt.plot(self.frequency_turns_per_min, self.speed_hub1, label='1 передача')
         plt.plot(self.frequency_turns_per_min, self.speed_hub2, label='2 передача')
         plt.plot(self.frequency_turns_per_min, self.speed_hub3, label='3 передача')

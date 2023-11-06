@@ -1,15 +1,17 @@
 from dataclasses import dataclass, field
 
+from matplotlib import pyplot as plt
 from pandas import DataFrame
 
 
 @dataclass
 class AirResistanceService:
-    """Рассчёт габаритных размеров"""
+    """Рассчёт габаритных размеров и сопротивления воздуха"""
     width: float
     height: float
     streamline_coefficient: float
     speed_car_data_frame: DataFrame
+    frequency_turns_per_min: list
 
     def __post_init__(self):
         self.midelev_cross_sectional_area = self.width * self.height * 0.79
@@ -22,6 +24,7 @@ class AirResistanceService:
         self.speed_hub4 = self.speed_car_data_frame.iloc[:,
                               4].to_numpy()  # массив кол-ва оборотов колеса на 4 скорости
         self.speed_hub5 = self.speed_car_data_frame.iloc[:, 5].to_numpy()
+        self.show_graphic()
 
     @property
     def air_resistance_hub1(self):
@@ -67,3 +70,15 @@ class AirResistanceService:
             resistance_list.append(resistance)
         return resistance_list
 
+    def show_graphic(self):
+        """Построение графика сопротивления воздуха"""
+        plt.xlabel("Частота, об/мин")
+        plt.title('Сопротивление воздуха от оборотов двигателя')
+        plt.plot(self.frequency_turns_per_min, self.air_resistance_hub1, label='1 передача')
+        plt.plot(self.frequency_turns_per_min, self.air_resistance_hub2, label='2 передача')
+        plt.plot(self.frequency_turns_per_min, self.air_resistance_hub3, label='3 передача')
+        plt.plot(self.frequency_turns_per_min, self.air_resistance_hub4, label='4 передача')
+        plt.plot(self.frequency_turns_per_min, self.air_resistance_hub5, label='5 передача')
+        plt.legend()
+        plt.grid(axis='y')
+        plt.show()

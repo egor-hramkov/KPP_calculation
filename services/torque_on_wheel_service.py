@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+from matplotlib import pyplot as plt
 from pandas import DataFrame
 
 
@@ -9,6 +10,7 @@ class TorqueOnWheelService:
     gear_ratios_dataset: DataFrame
     power_and_torque_dataset: DataFrame
     kpd_dataset: DataFrame
+    frequency_turns_per_min: list
 
     def __post_init__(self):
         self.full_gear_ratio_hub1 = self.gear_ratios_dataset['full_gear_ratio'][0]
@@ -23,6 +25,7 @@ class TorqueOnWheelService:
         self.kpd_hub3 = self.kpd_dataset['KPD'][2]
         self.kpd_hub4 = self.kpd_dataset['KPD'][3]
         self.kpd_hub5 = self.kpd_dataset['KPD'][4]
+        self.show_graphic()
 
     @property
     def torque_on_wheel_hub1(self):
@@ -50,3 +53,17 @@ class TorqueOnWheelService:
         for hm in self.hm_per_turns_engine:
             torque_on_wheel.append(hm * full_gear_ratio_hub * kpd_hub)
         return torque_on_wheel
+
+    def show_graphic(self):
+        """Построение графика крутящего момента на колесе"""
+        plt.ylabel("об/мин")
+        plt.xlabel("Частота, об/мин")
+        plt.title('Крутящий момент на колесе от оборотов двигателя')
+        plt.plot(self.frequency_turns_per_min, self.torque_on_wheel_hub1, label='1 передача')
+        plt.plot(self.frequency_turns_per_min, self.torque_on_wheel_hub2, label='2 передача')
+        plt.plot(self.frequency_turns_per_min, self.torque_on_wheel_hub3, label='3 передача')
+        plt.plot(self.frequency_turns_per_min, self.torque_on_wheel_hub4, label='4 передача')
+        plt.plot(self.frequency_turns_per_min, self.torque_on_wheel_hub5, label='5 передача')
+        plt.legend()
+        plt.grid(axis='y')
+        plt.show()

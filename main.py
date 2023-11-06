@@ -167,7 +167,8 @@ air_resistance_service = AirResistanceService(
     config['data']['dimensions']['car_width'],
     config['data']['dimensions']['car_height'],
     config['data']['dimensions']['streamline_coefficient'],
-    speed_car
+    speed_car,
+    frequency_turns_per_min
 )
 
 dimensions = pd.DataFrame()
