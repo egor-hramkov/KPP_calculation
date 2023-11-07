@@ -324,7 +324,7 @@ response = JSONHelper().dataframes_to_dict(all_dataframes)
 
 # таблица расчёта динамического фактора
 dynamic_factor_service = DynamicFactorService(km_per_hour, speed_car, coefficient_polynom, wheel_info_table,
-                                              dependence_torque_on_air_resistance)
+                                              dependence_torque_on_air_resistance, gear_ratio_info, kpd)
 dynamic_factor = pd.DataFrame()
 dynamic_factor['Км/ч'] = dynamic_factor_service.km_per_hour_array
 dynamic_factor['Обороты 1 передача'] = dynamic_factor_service.turnovers_hub1
