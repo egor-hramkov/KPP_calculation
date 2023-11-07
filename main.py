@@ -4,7 +4,8 @@ from pandas import DataFrame
 
 from services.calculate_KPD_service import CalculateKPDService
 from services.air_resistance_service import AirResistanceService
-from services.coefficient_of_influence_of_power_on_fuel_consumption_service import CoefficientsInfluence
+from services.coefficient_influence_power_on_fuel_consumption_service import CoefficientsInfluence
+from services.coefficient_turnovers_to_fuel_service import CoefficientTurnoversToFuelService
 from services.dependence_torque_on_air_resistance_service import DependenceOfTorqueOnAirResistanceService
 from services.dynamic_factor_service import DynamicFactorService
 from services.gear_ratio_service import GearRatioService
@@ -348,10 +349,10 @@ dynamic_factor['Топливо 5 передача'] = dynamic_factor_service.fue
 influence_power_on_fuel_consumption = pd.DataFrame()
 
 
-coefficients_of_influence_data = CoefficientsInfluence(frequency_turns_per_min)
+coefficient_turnovers_to_fuel_service = CoefficientTurnoversToFuelService(frequency_turns_per_min)
 coefficients_of_influence = pd.DataFrame()
 
-coefficients_of_influence['Коэффиценты'] = coefficients_of_influence_data.coefficients
-coefficients_of_influence['частота'] = coefficients_of_influence_data.frequency_turns_per_min
+coefficients_of_influence['Коэффиценты'] = coefficient_turnovers_to_fuel_service.coefficients
+coefficients_of_influence['частота'] = coefficient_turnovers_to_fuel_service.frequency_turns_per_min
 coefficients_of_influence.name = 'Коэффициент влияния мощности на расход топлива'
 all_dataframes.append(coefficients_of_influence)

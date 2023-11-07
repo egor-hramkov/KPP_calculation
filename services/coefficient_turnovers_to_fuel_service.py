@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 
 
 @dataclass
-class CoefficientsInfluence:
+class CoefficientTurnoversToFuelService:
     """Рассчитывает коэффициент влияния мощности на расход топлива"""
     frequency_turns_per_min: list
 
