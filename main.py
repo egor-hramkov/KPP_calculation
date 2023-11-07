@@ -329,6 +329,20 @@ dynamic_factor = pd.DataFrame()
 dynamic_factor['Км/ч'] = dynamic_factor_service.km_per_hour_array
 dynamic_factor['Обороты 1 передача'] = dynamic_factor_service.turnovers_hub1
 dynamic_factor['Крутящий момент 1 передача'] = dynamic_factor_service.torque_hub1
+dynamic_factor['Топливо 1 передача'] = dynamic_factor_service.fuel_hub1
+dynamic_factor['Обороты 2 передача'] = dynamic_factor_service.turnovers_hub2
+dynamic_factor['Крутящий момент 2 передача'] = dynamic_factor_service.torque_hub2
+dynamic_factor['Топливо 2 передача'] = dynamic_factor_service.fuel_hub2
+dynamic_factor['Обороты 3 передача'] = dynamic_factor_service.turnovers_hub3
+dynamic_factor['Крутящий момент 3 передача'] = dynamic_factor_service.torque_hub3
+dynamic_factor['Топливо 3 передача'] = dynamic_factor_service.fuel_hub3
+dynamic_factor['Обороты 4 передача'] = dynamic_factor_service.turnovers_hub4
+dynamic_factor['Крутящий момент 4 передача'] = dynamic_factor_service.torque_hub4
+dynamic_factor['Топливо 4 передача'] = dynamic_factor_service.fuel_hub4
+dynamic_factor['Обороты 5 передача'] = dynamic_factor_service.turnovers_hub5
+dynamic_factor['Крутящий момент 5 передача'] = dynamic_factor_service.torque_hub5
+dynamic_factor['Топливо 5 передача'] = dynamic_factor_service.fuel_hub5
+
 
 #коэффициент влияния мощьности на расход топлива
 influence_power_on_fuel_consumption = pd.DataFrame()
