@@ -10,17 +10,17 @@ class CoefficientInfluencePowerOnFuelConsumptionService:
 
 
     def __post_init__(self):
-        self.frequency_array = self.torque_on_wheel_dataset['frequency_turns_per_min'].to_numpy()
-        self.torque_on_wheel_hub1 = self.torque_on_wheel_dataset['hub1'].to_numpy()
-        self.torque_on_wheel_hub2 = self.torque_on_wheel_dataset['hub2'].to_numpy()
-        self.torque_on_wheel_hub3 = self.torque_on_wheel_dataset['hub3'].to_numpy()
-        self.torque_on_wheel_hub4 = self.torque_on_wheel_dataset['hub4'].to_numpy()
-        self.torque_on_wheel_hub5 = self.torque_on_wheel_dataset['hub5'].to_numpy()
-        self.air_resistance_hub1 = self.air_resistance_dataset['hub1'].to_numpy()
-        self.air_resistance_hub2 = self.air_resistance_dataset['hub2'].to_numpy()
-        self.air_resistance_hub3 = self.air_resistance_dataset['hub3'].to_numpy()
-        self.air_resistance_hub4 = self.air_resistance_dataset['hub4'].to_numpy()
-        self.air_resistance_hub5 = self.air_resistance_dataset['hub5'].to_numpy()
+        self.frequency_array = self.torque_on_wheel_dataset['Частота оборотов двигателя'].to_numpy()
+        self.torque_on_wheel_hub1 = self.torque_on_wheel_dataset['Передача 1'].to_numpy()
+        self.torque_on_wheel_hub2 = self.torque_on_wheel_dataset['Передача 2'].to_numpy()
+        self.torque_on_wheel_hub3 = self.torque_on_wheel_dataset['Передача 3'].to_numpy()
+        self.torque_on_wheel_hub4 = self.torque_on_wheel_dataset['Передача 4'].to_numpy()
+        self.torque_on_wheel_hub5 = self.torque_on_wheel_dataset['Передача 5'].to_numpy()
+        self.air_resistance_hub1 = self.air_resistance_dataset['Передача 1'].to_numpy()
+        self.air_resistance_hub2 = self.air_resistance_dataset['Передача 2'].to_numpy()
+        self.air_resistance_hub3 = self.air_resistance_dataset['Передача 3'].to_numpy()
+        self.air_resistance_hub4 = self.air_resistance_dataset['Передача 4'].to_numpy()
+        self.air_resistance_hub5 = self.air_resistance_dataset['Передача 5'].to_numpy()
 
     @property
     def coefs_hub1(self):

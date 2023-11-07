@@ -20,11 +20,11 @@ class FuelConsumptionService:
         self.coefs_power_on_fuel_hub3 = self.influence_power_on_fuel_consumption_dataset['Передача 3'].to_numpy()
         self.coefs_power_on_fuel_hub4 = self.influence_power_on_fuel_consumption_dataset['Передача 4'].to_numpy()
         self.coefs_power_on_fuel_hub5 = self.influence_power_on_fuel_consumption_dataset['Передача 5'].to_numpy()
-        self.air_resistance_hub1 = self.air_resistance_dataset['hub1'].to_numpy()
-        self.air_resistance_hub2 = self.air_resistance_dataset['hub2'].to_numpy()
-        self.air_resistance_hub3 = self.air_resistance_dataset['hub3'].to_numpy()
-        self.air_resistance_hub4 = self.air_resistance_dataset['hub4'].to_numpy()
-        self.air_resistance_hub5 = self.air_resistance_dataset['hub5'].to_numpy()
+        self.air_resistance_hub1 = self.air_resistance_dataset['Передача 1'].to_numpy()
+        self.air_resistance_hub2 = self.air_resistance_dataset['Передача 2'].to_numpy()
+        self.air_resistance_hub3 = self.air_resistance_dataset['Передача 3'].to_numpy()
+        self.air_resistance_hub4 = self.air_resistance_dataset['Передача 4'].to_numpy()
+        self.air_resistance_hub5 = self.air_resistance_dataset['Передача 5'].to_numpy()
         self.show_graphic()
 
     @property

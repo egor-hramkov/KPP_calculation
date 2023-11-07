@@ -14,35 +14,35 @@ class TotalForceWheelIdealConditionsService:
     speed_car_dataset: DataFrame
     polynom_dataset: DataFrame
     dependence_torque_on_air_resistance_dataset: DataFrame
-    gear_ratio_dataset:DataFrame
-    kpd_dataset:DataFrame
+    gear_ratio_dataset: DataFrame
+    kpd_dataset: DataFrame
 
     def __post_init__(self):
         self.rolling_resistance_array = self.rolling_resistance_dataset[
             '1.Хорошее состояние сухого асфальта'].to_numpy()
-        self.min_frequency = self.speed_car_dataset['frequency'][0]
-        self.min_speed_hub1 = self.speed_car_dataset['hub1'][0]
-        self.min_speed_hub2 = self.speed_car_dataset['hub2'][0]
-        self.min_speed_hub3 = self.speed_car_dataset['hub3'][0]
-        self.min_speed_hub4 = self.speed_car_dataset['hub4'][0]
-        self.min_speed_hub5 = self.speed_car_dataset['hub5'][0]
-        self.frequency_array = self.speed_car_dataset['frequency'].to_numpy()
-        self.speed_hub1_array = self.speed_car_dataset['hub1'].to_numpy()
-        self.speed_hub2_array = self.speed_car_dataset['hub2'].to_numpy()
-        self.speed_hub3_array = self.speed_car_dataset['hub3'].to_numpy()
-        self.speed_hub4_array = self.speed_car_dataset['hub4'].to_numpy()
-        self.speed_hub5_array = self.speed_car_dataset['hub5'].to_numpy()
+        self.min_frequency = self.speed_car_dataset['Частота оборотов двигателя'][0]
+        self.min_speed_hub1 = self.speed_car_dataset['Передача 1'][0]
+        self.min_speed_hub2 = self.speed_car_dataset['Передача 2'][0]
+        self.min_speed_hub3 = self.speed_car_dataset['Передача 3'][0]
+        self.min_speed_hub4 = self.speed_car_dataset['Передача 4'][0]
+        self.min_speed_hub5 = self.speed_car_dataset['Передача 5'][0]
+        self.frequency_array = self.speed_car_dataset['Частота оборотов двигателя'].to_numpy()
+        self.speed_hub1_array = self.speed_car_dataset['Передача 1'].to_numpy()
+        self.speed_hub2_array = self.speed_car_dataset['Передача 2'].to_numpy()
+        self.speed_hub3_array = self.speed_car_dataset['Передача 3'].to_numpy()
+        self.speed_hub4_array = self.speed_car_dataset['Передача 4'].to_numpy()
+        self.speed_hub5_array = self.speed_car_dataset['Передача 5'].to_numpy()
         self.coef_moment_5 = self.polynom_dataset['X/5'][0]
         self.coef_moment_4 = self.polynom_dataset['X/4'][0]
         self.coef_moment_3 = self.polynom_dataset['X/3'][0]
         self.coef_moment_2 = self.polynom_dataset['X/2'][0]
         self.coef_moment_1 = self.polynom_dataset['X'][0]
         self.coef_moment_1 = self.polynom_dataset['X'][0]
-        self.full_gear_ratio_hub1 = self.gear_ratio_dataset['full_gear_ratio'][0]
-        self.full_gear_ratio_hub2 = self.gear_ratio_dataset['full_gear_ratio'][1]
-        self.full_gear_ratio_hub3 = self.gear_ratio_dataset['full_gear_ratio'][2]
-        self.full_gear_ratio_hub4 = self.gear_ratio_dataset['full_gear_ratio'][3]
-        self.full_gear_ratio_hub5 = self.gear_ratio_dataset['full_gear_ratio'][4]
+        self.full_gear_ratio_hub1 = self.gear_ratio_dataset['Полное передаточное число'][0]
+        self.full_gear_ratio_hub2 = self.gear_ratio_dataset['Полное передаточное число'][1]
+        self.full_gear_ratio_hub3 = self.gear_ratio_dataset['Полное передаточное число'][2]
+        self.full_gear_ratio_hub4 = self.gear_ratio_dataset['Полное передаточное число'][3]
+        self.full_gear_ratio_hub5 = self.gear_ratio_dataset['Полное передаточное число'][4]
         self.kpd_hub1 = self.kpd_dataset['КПД'][0]
         self.kpd_hub2 = self.kpd_dataset['КПД'][1]
         self.kpd_hub3 = self.kpd_dataset['КПД'][2]
@@ -108,8 +108,8 @@ class TotalForceWheelIdealConditionsService:
                 force_on_wheel.append('-')
             else:
                 force = ((self.coef_moment_5 * (turnovers ** 5) + self.coef_moment_4 * (
-                            turnovers ** 4) + self.coef_moment_3 * (turnovers ** 3) + self.coef_moment_2 * (
-                                     turnovers ** 2) + self.coef_moment_1 * turnovers + self.coef_self)*full_gear_ratio_hub*kpd_hub)-air_resistance
+                        turnovers ** 4) + self.coef_moment_3 * (turnovers ** 3) + self.coef_moment_2 * (
+                                  turnovers ** 2) + self.coef_moment_1 * turnovers + self.coef_self) * full_gear_ratio_hub * kpd_hub) - air_resistance
                 force_on_wheel.append(force)
         return force_on_wheel
 
@@ -118,11 +118,16 @@ class TotalForceWheelIdealConditionsService:
         plt.xlabel("км/ч")
         plt.title('Сопротивления качению от скорости')
 
-        power_hub1, km_per_hour_for_1_tier = TableHelper().prepare_data_y_for_x(self.force_on_wheel_hub1, self.km_per_hour_array)
-        power_hub2, km_per_hour_for_2_tier = TableHelper().prepare_data_y_for_x(self.force_on_wheel_hub2, self.km_per_hour_array)
-        power_hub3, km_per_hour_for_3_tier = TableHelper().prepare_data_y_for_x(self.force_on_wheel_hub3, self.km_per_hour_array)
-        power_hub4, km_per_hour_for_4_tier = TableHelper().prepare_data_y_for_x(self.force_on_wheel_hub4, self.km_per_hour_array)
-        power_hub5, km_per_hour_for_5_tier = TableHelper().prepare_data_y_for_x(self.force_on_wheel_hub5, self.km_per_hour_array)
+        power_hub1, km_per_hour_for_1_tier = TableHelper().prepare_data_y_for_x(self.force_on_wheel_hub1,
+                                                                                self.km_per_hour_array)
+        power_hub2, km_per_hour_for_2_tier = TableHelper().prepare_data_y_for_x(self.force_on_wheel_hub2,
+                                                                                self.km_per_hour_array)
+        power_hub3, km_per_hour_for_3_tier = TableHelper().prepare_data_y_for_x(self.force_on_wheel_hub3,
+                                                                                self.km_per_hour_array)
+        power_hub4, km_per_hour_for_4_tier = TableHelper().prepare_data_y_for_x(self.force_on_wheel_hub4,
+                                                                                self.km_per_hour_array)
+        power_hub5, km_per_hour_for_5_tier = TableHelper().prepare_data_y_for_x(self.force_on_wheel_hub5,
+                                                                                self.km_per_hour_array)
 
         plt.plot(km_per_hour_for_1_tier, power_hub1, label='1')
         plt.plot(km_per_hour_for_2_tier, power_hub2, label='2')
