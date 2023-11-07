@@ -4,10 +4,11 @@ from pandas import DataFrame
 
 from services.calculate_KPD_service import CalculateKPDService
 from services.air_resistance_service import AirResistanceService
-from services.coefficient_influence_power_on_fuel_consumption_service import CoefficientsInfluence
+from services.coefficient_influence_power_on_fuel_consumption_service import CoefficientInfluencePowerOnFuelConsumptionService
 from services.coefficient_turnovers_to_fuel_service import CoefficientTurnoversToFuelService
 from services.dependence_torque_on_air_resistance_service import DependenceOfTorqueOnAirResistanceService
 from services.dynamic_factor_service import DynamicFactorService
+from services.fuel_consumption_service import FuelConsumptionService
 from services.gear_ratio_service import GearRatioService
 from services.power_and_torque import PowerAndTorqueService
 from services.rolling_resistance_service import RollingResistanceService
@@ -346,13 +347,46 @@ dynamic_factor['Топливо 5 передача'] = dynamic_factor_service.fue
 
 
 #коэффициент влияния мощьности на расход топлива
+coefficient_influence_power_on_fuel_consumption_service = CoefficientInfluencePowerOnFuelConsumptionService(torque_on_wheel, air_resistance)
 influence_power_on_fuel_consumption = pd.DataFrame()
 
+influence_power_on_fuel_consumption['Частота об/м']=coefficient_influence_power_on_fuel_consumption_service.frequency_array
+influence_power_on_fuel_consumption['Передача 1']=coefficient_influence_power_on_fuel_consumption_service.coefs_hub1
+influence_power_on_fuel_consumption['Передача 2']=coefficient_influence_power_on_fuel_consumption_service.coefs_hub2
+influence_power_on_fuel_consumption['Передача 3']=coefficient_influence_power_on_fuel_consumption_service.coefs_hub3
+influence_power_on_fuel_consumption['Передача 4']=coefficient_influence_power_on_fuel_consumption_service.coefs_hub4
+influence_power_on_fuel_consumption['Передача 5']=coefficient_influence_power_on_fuel_consumption_service.coefs_hub5
 
+influence_power_on_fuel_consumption.name = 'Коэффициенты влияния мощности на расход топлива'
+all_dataframes.append(influence_power_on_fuel_consumption)
+
+
+#построение таблицы коэффициентов влияния оборотов на расход топлива
 coefficient_turnovers_to_fuel_service = CoefficientTurnoversToFuelService(frequency_turns_per_min)
-coefficients_of_influence = pd.DataFrame()
+influence_turnovers_of_fuel_consumption = pd.DataFrame()
 
-coefficients_of_influence['Коэффиценты'] = coefficient_turnovers_to_fuel_service.coefficients
-coefficients_of_influence['частота'] = coefficient_turnovers_to_fuel_service.frequency_turns_per_min
-coefficients_of_influence.name = 'Коэффициент влияния мощности на расход топлива'
-all_dataframes.append(coefficients_of_influence)
+influence_turnovers_of_fuel_consumption['Частота об/м'] = coefficient_turnovers_to_fuel_service.frequency_turns_per_min
+influence_turnovers_of_fuel_consumption['Коэффиценты'] = coefficient_turnovers_to_fuel_service.coefficients
+
+influence_turnovers_of_fuel_consumption.name = 'Коэффициенты влияния оборотов двигателя на расход топлива'
+all_dataframes.append(influence_turnovers_of_fuel_consumption)
+
+#построение таблицы расхода топлива автомобиля
+fuel_consumption_service=FuelConsumptionService(influence_turnovers_of_fuel_consumption, influence_power_on_fuel_consumption, air_resistance)
+fuel_consumption = pd.DataFrame()
+
+fuel_consumption['Частота об/м'] = fuel_consumption_service.frequency_array
+fuel_consumption['Передача 1'] = fuel_consumption_service.fuel_consumption_hub1
+fuel_consumption['Передача 2'] = fuel_consumption_service.fuel_consumption_hub2
+fuel_consumption['Передача 3'] = fuel_consumption_service.fuel_consumption_hub3
+fuel_consumption['Передача 4'] = fuel_consumption_service.fuel_consumption_hub4
+fuel_consumption['Передача 5'] = fuel_consumption_service.fuel_consumption_hub5
+
+fuel_consumption.name = 'Расход топлива автомобиля'
+all_dataframes.append(fuel_consumption)
+
+
+#построение таблицы суммарной мощности автомобиля на каждой передаче
+
+
+#построение таблицы "мощность движ"
