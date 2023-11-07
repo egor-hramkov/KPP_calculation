@@ -384,9 +384,3 @@ fuel_consumption['Передача 5'] = fuel_consumption_service.fuel_consumpti
 
 fuel_consumption.name = 'Расход топлива автомобиля'
 all_dataframes.append(fuel_consumption)
-
-
-#построение таблицы суммарной мощности автомобиля на каждой передаче
-
-
-#построение таблицы "мощность движ"
