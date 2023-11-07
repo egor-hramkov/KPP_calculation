@@ -4,7 +4,8 @@ from pandas import DataFrame
 
 from services.calculate_KPD_service import CalculateKPDService
 from services.air_resistance_service import AirResistanceService
-from services.coefficient_influence_power_on_fuel_consumption_service import CoefficientInfluencePowerOnFuelConsumptionService
+from services.coefficient_influence_power_on_fuel_consumption_service import \
+    CoefficientInfluencePowerOnFuelConsumptionService
 from services.coefficient_turnovers_to_fuel_service import CoefficientTurnoversToFuelService
 from services.dependence_torque_on_air_resistance_service import DependenceOfTorqueOnAirResistanceService
 from services.dynamic_factor_service import DynamicFactorService
@@ -68,31 +69,26 @@ turnovers_wheel['hub5'] = turns_wheels_service.turnovers_wheels_hub5
 turnovers_wheel.name = 'turnovers_wheel'
 all_dataframes.append(turnovers_wheel)
 
-#таблица размерности шин
+# таблица размерности шин
 width_wheel = config['data']['wheel_info']['profile_width']
 height_wheel = config['data']['wheel_info']['profile_height']
 diameter_wheel = config['data']['wheel_info']['diameter']
 wheel_info_table = pd.DataFrame()
-wheel_info_table['Параметр'] = ['Размер колес','Номинальный радиус (м)','Статический радиус','Динамический радиус']
-nom_radius=0.0254*(diameter_wheel/2)+(width_wheel/1000)*(height_wheel/100)
+wheel_info_table['Параметр'] = ['Размер колес', 'Номинальный радиус (м)', 'Статический радиус', 'Динамический радиус']
+nom_radius = 0.0254 * (diameter_wheel / 2) + (width_wheel / 1000) * (height_wheel / 100)
 if height_wheel >= 90:
-     tire_crumpling_ratio = 0.8
+    tire_crumpling_ratio = 0.8
 elif height_wheel <= 50:
     tire_crumpling_ratio = 0.85
 else:
     tire_crumpling_ratio = 0.814285714
-stat_radius = 0.0254*(diameter_wheel/2)+(width_wheel/1000)*(height_wheel/100)*tire_crumpling_ratio
-dynamic_radius = nom_radius - ((nom_radius-stat_radius)/3)
-wheel_info_table['Ширина профиля']=[width_wheel, nom_radius, stat_radius, dynamic_radius]
-wheel_info_table['Профиль шины']=[height_wheel, '-', '-', '-']
-wheel_info_table['Диаметр шины']=[diameter_wheel, '-','-','-']
-wheel_info_table.name='wheel_info_table'
+stat_radius = 0.0254 * (diameter_wheel / 2) + (width_wheel / 1000) * (height_wheel / 100) * tire_crumpling_ratio
+dynamic_radius = nom_radius - ((nom_radius - stat_radius) / 3)
+wheel_info_table['Ширина профиля'] = [width_wheel, nom_radius, stat_radius, dynamic_radius]
+wheel_info_table['Профиль шины'] = [height_wheel, '-', '-', '-']
+wheel_info_table['Диаметр шины'] = [diameter_wheel, '-', '-', '-']
+wheel_info_table.name = 'wheel_info_table'
 all_dataframes.append(wheel_info_table)
-
-
-
-
-
 
 # формирование данных, где вычисляется скорость автомобиля относительно кол-ва оборотов двигателя, номера передачи,
 # данных о передаточных числах каждой скорости и параметрах колёс(таблица из ecxel №5)
@@ -192,7 +188,6 @@ air_resistance['hub2'] = air_resistance_service.air_resistance_hub2
 air_resistance['hub3'] = air_resistance_service.air_resistance_hub3
 air_resistance['hub4'] = air_resistance_service.air_resistance_hub4
 air_resistance['hub5'] = air_resistance_service.air_resistance_hub5
-
 
 air_resistance.name = 'air_resistance'
 all_dataframes.append(air_resistance)
@@ -295,32 +290,40 @@ rolling_resistance['8.Мокрая укатанная грунтовая дор�
 rolling_resistance.name = 'rolling_resistance'
 all_dataframes.append(rolling_resistance)
 
-
 # таблица суммарной силы сопротивлению движения
-total_resistance_force_movement_service = TotalResistanceForceMovementService([-20,-15,-10,-5,0,5,10,15,20], full_mass)
+total_resistance_force_movement_service = TotalResistanceForceMovementService([-20, -15, -10, -5, 0, 5, 10, 15, 20],
+                                                                              full_mass)
 total_resistance_force_movement = pd.DataFrame()
 total_resistance_force_movement['Угол %'] = total_resistance_force_movement_service.angle_array
 total_resistance_force_movement['Сила подъёма'] = total_resistance_force_movement_service.lifting_force
-total_resistance_force_movement.name='total_resistance_force_movement'
+total_resistance_force_movement.name = 'total_resistance_force_movement'
 all_dataframes.append(total_resistance_force_movement)
 
-
-#суммарная сила на колесе в идиальных условиях
-total_force_wheel_ideal_conditions_service = TotalForceWheelIdealConditionsService(km_per_hour, rolling_resistance, speed_car, coefficient_polynom,dependence_torque_on_air_resistance, gear_ratio_info,kpd)
+# суммарная сила на колесе в идиальных условиях
+total_force_wheel_ideal_conditions_service = TotalForceWheelIdealConditionsService(km_per_hour, rolling_resistance,
+                                                                                   speed_car, coefficient_polynom,
+                                                                                   dependence_torque_on_air_resistance,
+                                                                                   gear_ratio_info, kpd)
 total_force_wheel_ideal_conditions = pd.DataFrame()
 total_force_wheel_ideal_conditions['Км/ч'] = total_force_wheel_ideal_conditions_service.km_per_hour_array
-total_force_wheel_ideal_conditions['Сумма сопротивления'] = total_force_wheel_ideal_conditions_service.air_resistance_array
+total_force_wheel_ideal_conditions[
+    'Сумма сопротивления'] = total_force_wheel_ideal_conditions_service.air_resistance_array
 total_force_wheel_ideal_conditions['Обороты 1 передача'] = total_force_wheel_ideal_conditions_service.turnovers_hub1
-total_force_wheel_ideal_conditions['Крутящий момент 1 передача'] = total_force_wheel_ideal_conditions_service.force_on_wheel_hub1
+total_force_wheel_ideal_conditions[
+    'Крутящий момент 1 передача'] = total_force_wheel_ideal_conditions_service.force_on_wheel_hub1
 total_force_wheel_ideal_conditions['Обороты 2 передача'] = total_force_wheel_ideal_conditions_service.turnovers_hub2
-total_force_wheel_ideal_conditions['Крутящий момент 2 передача'] = total_force_wheel_ideal_conditions_service.force_on_wheel_hub2
+total_force_wheel_ideal_conditions[
+    'Крутящий момент 2 передача'] = total_force_wheel_ideal_conditions_service.force_on_wheel_hub2
 total_force_wheel_ideal_conditions['Обороты 3 передача'] = total_force_wheel_ideal_conditions_service.turnovers_hub3
-total_force_wheel_ideal_conditions['Крутящий момент 3 передача'] = total_force_wheel_ideal_conditions_service.force_on_wheel_hub3
+total_force_wheel_ideal_conditions[
+    'Крутящий момент 3 передача'] = total_force_wheel_ideal_conditions_service.force_on_wheel_hub3
 total_force_wheel_ideal_conditions['Обороты 4 передача'] = total_force_wheel_ideal_conditions_service.turnovers_hub4
-total_force_wheel_ideal_conditions['Крутящий момент 4 передача'] = total_force_wheel_ideal_conditions_service.force_on_wheel_hub4
+total_force_wheel_ideal_conditions[
+    'Крутящий момент 4 передача'] = total_force_wheel_ideal_conditions_service.force_on_wheel_hub4
 total_force_wheel_ideal_conditions['Обороты 5 передача'] = total_force_wheel_ideal_conditions_service.turnovers_hub5
-total_force_wheel_ideal_conditions['Крутящий момент 5 передача'] = total_force_wheel_ideal_conditions_service.force_on_wheel_hub5
-total_force_wheel_ideal_conditions.name='total_force_wheel_ideal_conditions'
+total_force_wheel_ideal_conditions[
+    'Крутящий момент 5 передача'] = total_force_wheel_ideal_conditions_service.force_on_wheel_hub5
+total_force_wheel_ideal_conditions.name = 'total_force_wheel_ideal_conditions'
 all_dataframes.append(total_force_wheel_ideal_conditions)
 response = JSONHelper().dataframes_to_dict(all_dataframes)
 
@@ -345,23 +348,23 @@ dynamic_factor['Обороты 5 передача'] = dynamic_factor_service.tur
 dynamic_factor['Крутящий момент 5 передача'] = dynamic_factor_service.torque_hub5
 dynamic_factor['Топливо 5 передача'] = dynamic_factor_service.fuel_hub5
 
-
-#коэффициент влияния мощьности на расход топлива
-coefficient_influence_power_on_fuel_consumption_service = CoefficientInfluencePowerOnFuelConsumptionService(torque_on_wheel, air_resistance)
+# коэффициент влияния мощьности на расход топлива
+coefficient_influence_power_on_fuel_consumption_service = CoefficientInfluencePowerOnFuelConsumptionService(
+    torque_on_wheel, air_resistance)
 influence_power_on_fuel_consumption = pd.DataFrame()
 
-influence_power_on_fuel_consumption['Частота об/м']=coefficient_influence_power_on_fuel_consumption_service.frequency_array
-influence_power_on_fuel_consumption['Передача 1']=coefficient_influence_power_on_fuel_consumption_service.coefs_hub1
-influence_power_on_fuel_consumption['Передача 2']=coefficient_influence_power_on_fuel_consumption_service.coefs_hub2
-influence_power_on_fuel_consumption['Передача 3']=coefficient_influence_power_on_fuel_consumption_service.coefs_hub3
-influence_power_on_fuel_consumption['Передача 4']=coefficient_influence_power_on_fuel_consumption_service.coefs_hub4
-influence_power_on_fuel_consumption['Передача 5']=coefficient_influence_power_on_fuel_consumption_service.coefs_hub5
+influence_power_on_fuel_consumption[
+    'Частота об/м'] = coefficient_influence_power_on_fuel_consumption_service.frequency_array
+influence_power_on_fuel_consumption['Передача 1'] = coefficient_influence_power_on_fuel_consumption_service.coefs_hub1
+influence_power_on_fuel_consumption['Передача 2'] = coefficient_influence_power_on_fuel_consumption_service.coefs_hub2
+influence_power_on_fuel_consumption['Передача 3'] = coefficient_influence_power_on_fuel_consumption_service.coefs_hub3
+influence_power_on_fuel_consumption['Передача 4'] = coefficient_influence_power_on_fuel_consumption_service.coefs_hub4
+influence_power_on_fuel_consumption['Передача 5'] = coefficient_influence_power_on_fuel_consumption_service.coefs_hub5
 
 influence_power_on_fuel_consumption.name = 'Коэффициенты влияния мощности на расход топлива'
 all_dataframes.append(influence_power_on_fuel_consumption)
 
-
-#построение таблицы коэффициентов влияния оборотов на расход топлива
+# построение таблицы коэффициентов влияния оборотов на расход топлива
 coefficient_turnovers_to_fuel_service = CoefficientTurnoversToFuelService(frequency_turns_per_min)
 influence_turnovers_of_fuel_consumption = pd.DataFrame()
 
@@ -371,8 +374,10 @@ influence_turnovers_of_fuel_consumption['Коэффиценты'] = coefficient_
 influence_turnovers_of_fuel_consumption.name = 'Коэффициенты влияния оборотов двигателя на расход топлива'
 all_dataframes.append(influence_turnovers_of_fuel_consumption)
 
-#построение таблицы расхода топлива автомобиля
-fuel_consumption_service=FuelConsumptionService(influence_turnovers_of_fuel_consumption, influence_power_on_fuel_consumption, air_resistance)
+# построение таблицы расхода топлива автомобиля
+fuel_consumption_service = FuelConsumptionService(influence_turnovers_of_fuel_consumption,
+                                                  influence_power_on_fuel_consumption, air_resistance,
+                                                  frequency_turns_per_min)
 fuel_consumption = pd.DataFrame()
 
 fuel_consumption['Частота об/м'] = fuel_consumption_service.frequency_array
