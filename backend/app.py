@@ -1,15 +1,16 @@
 import cherrypy
 
 from backend.config import conf
+from main import Main
 
 
 @cherrypy.expose
 class CherryApp:
     """Основной класс для бэкэнда веб-приложения"""
 
-    @cherrypy.tools.accept(media='text/plain')
+    @cherrypy.tools.json_out()
     def GET(self):
-        return f"Вроде всё работает!"
+        return {"data": Main().response}
 
     @cherrypy.tools.json_out()
     @cherrypy.tools.json_in()
@@ -19,7 +20,8 @@ class CherryApp:
         params = cherrypy.request.json
         if not params:
             return {'error': 'EMPTY PARAMS'}
-        return {"data": params}
+
+        return {"data": Main().response}
 
 
 if __name__ == '__main__':
