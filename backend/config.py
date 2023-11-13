@@ -10,7 +10,6 @@ conf = {
         'tools.response_headers.headers': [('Content-Type', 'text/plain')],
         'tools.encode.on': True,
         'tools.encode.encoding': 'utf-8',
-        'tools.decode.on': True,
-        'tools.decode.decoding': 'utf-8',
+        'tools.decode.on': True
     },
 }
