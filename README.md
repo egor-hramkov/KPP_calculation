@@ -9,3 +9,7 @@ pip install -r requirements.txt
 Если добавили какую-то питон библу, обновите список библиотек, используемых в проекте:
 
 pip freeze > requirements.txt
+
+Если при разработке в backend проблема с импортами своих модулей
+
+- Mark directory backend as source root and resource root 
