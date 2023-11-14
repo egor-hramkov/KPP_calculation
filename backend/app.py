@@ -1,7 +1,7 @@
 import cherrypy
 
-from backend.config import conf
-from backend.main import Main
+from config import conf
+from main import Main
 
 
 @cherrypy.expose

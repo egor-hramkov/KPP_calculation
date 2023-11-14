@@ -4,7 +4,7 @@ import numpy
 from matplotlib import pyplot as plt
 from pandas import DataFrame
 
-from backend.utils.table_helper import TableHelper
+from utils.table_helper import TableHelper
 
 
 @dataclass
