@@ -3,6 +3,7 @@ import os
 import cherrypy
 
 conf = {
+    'global': {'server.socket_host': '0.0.0.0', 'server.socket_port': 8080},
     '/': {
         'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
         'tools.sessions.on': True,

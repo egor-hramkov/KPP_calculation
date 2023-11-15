@@ -1,9 +1,11 @@
 version: "3.10"
 services:
   backend:
+    ports:
+      - "80:8080"
     container_name: backend
     build:
       context: ../
       dockerfile: .deploy/Dockerfile
     restart: 'no'
-    command: sh -c 'pip3 install -r backend/requirements.txt && python3 app.py'
+    command: sh -c 'pip3 install -r backend/requirements.txt && cd backend && python3 app.py'
