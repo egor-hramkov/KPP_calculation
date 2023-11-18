@@ -3,6 +3,8 @@ from dataclasses import dataclass, field
 from matplotlib import pyplot as plt
 from pandas import DataFrame
 
+from utils.graphic_helper import GraphicHelper
+
 
 @dataclass
 class AirResistanceService:
@@ -81,4 +83,4 @@ class AirResistanceService:
         plt.plot(self.frequency_turns_per_min, self.air_resistance_hub5, label='5 передача')
         plt.legend()
         plt.grid(axis='y')
-        plt.show()
+        GraphicHelper().save_graphic(plt)

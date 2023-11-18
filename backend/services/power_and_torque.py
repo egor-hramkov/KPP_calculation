@@ -2,6 +2,8 @@ from dataclasses import dataclass, field
 
 from matplotlib import pyplot as plt
 
+from utils.graphic_helper import GraphicHelper
+
 
 @dataclass
 class PowerAndTorqueService:
@@ -46,7 +48,7 @@ class PowerAndTorqueService:
         plt.plot(self.frequency_turns_per_min, self.torques, label='Крутящий момент МКР, Нм')
         plt.legend()
         plt.grid(axis='y')
-        plt.show()
+        GraphicHelper().save_graphic(plt)
 
     def show_graphic_powers(self):
         """Построение графика мощности от оборотов двигателя"""
@@ -56,4 +58,4 @@ class PowerAndTorqueService:
         plt.plot(self.frequency_turns_per_min, self.powers, label='Мощность, л.с.')
         plt.legend()
         plt.grid(axis='y')
-        plt.show()
+        GraphicHelper().save_graphic(plt)

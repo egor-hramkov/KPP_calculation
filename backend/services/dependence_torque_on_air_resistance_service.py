@@ -4,6 +4,7 @@ import numpy
 from matplotlib import pyplot as plt
 from pandas import DataFrame
 
+from utils.graphic_helper import GraphicHelper
 from utils.table_helper import TableHelper
 
 
@@ -136,5 +137,5 @@ class DependenceOfTorqueOnAirResistanceService:
         plt.plot(self.km_per_hour_array, self.air_resistance, label='Сопр. воздуха')
         plt.legend()
         plt.grid(axis='y')
-        plt.show()
+        GraphicHelper().save_graphic(plt)
 

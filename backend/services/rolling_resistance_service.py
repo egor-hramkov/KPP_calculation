@@ -4,6 +4,8 @@ import numpy
 from matplotlib import pyplot as plt
 from pandas import DataFrame
 
+from utils.graphic_helper import GraphicHelper
+
 
 @dataclass
 class RollingResistanceService:
@@ -79,4 +81,4 @@ class RollingResistanceService:
         plt.plot(self.km_per_hour_array, self.coef_rolling_resistance_type8, label='8')
         plt.legend()
         plt.grid(axis='y')
-        plt.show()
+        GraphicHelper().save_graphic(plt)

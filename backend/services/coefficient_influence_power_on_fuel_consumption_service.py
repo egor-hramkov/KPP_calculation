@@ -3,6 +3,8 @@ from dataclasses import dataclass
 import matplotlib.pyplot as plt
 from pandas import DataFrame
 
+from utils.graphic_helper import GraphicHelper
+
 
 @dataclass
 class CoefficientInfluencePowerOnFuelConsumptionService:
@@ -63,4 +65,4 @@ class CoefficientInfluencePowerOnFuelConsumptionService:
         plt.plot(self.frequency_array, self.coefs_hub5, label='5 Передача')
         plt.legend()
         plt.grid(axis='y')
-        plt.show()
+        GraphicHelper().save_graphic(plt)

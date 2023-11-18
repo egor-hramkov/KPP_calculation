@@ -3,6 +3,7 @@ from pandas import DataFrame
 import matplotlib.pyplot as plt
 
 from config import GRAPHICS_DIR
+from utils.graphic_helper import GraphicHelper
 
 
 @dataclass
@@ -85,4 +86,4 @@ class SpeedCarService:
         plt.plot(self.frequency_turns_per_min, self.speed_hub5, label='5 передача')
         plt.legend()
         plt.grid(axis='y')
-        plt.savefig(f'{GRAPHICS_DIR}/graph1.png')
+        GraphicHelper().save_graphic(plt)

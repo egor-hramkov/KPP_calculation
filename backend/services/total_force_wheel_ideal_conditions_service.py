@@ -4,6 +4,7 @@ import numpy
 from matplotlib import pyplot as plt
 from pandas import DataFrame
 
+from utils.graphic_helper import GraphicHelper
 from utils.table_helper import TableHelper
 
 
@@ -136,4 +137,4 @@ class TotalForceWheelIdealConditionsService:
         plt.plot(km_per_hour_for_5_tier, power_hub5, label='5')
         plt.legend()
         plt.grid(axis='y')
-        plt.show()
+        GraphicHelper().save_graphic(plt)

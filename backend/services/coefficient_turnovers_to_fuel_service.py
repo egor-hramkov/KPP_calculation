@@ -2,6 +2,8 @@ from dataclasses import dataclass
 
 from matplotlib import pyplot as plt
 
+from utils.graphic_helper import GraphicHelper
+
 
 @dataclass
 class CoefficientTurnoversToFuelService:
@@ -27,4 +29,4 @@ class CoefficientTurnoversToFuelService:
         plt.plot(self.frequency_turns_per_min, self.coefficients)
         plt.legend()
         plt.grid(axis='y')
-        plt.show()
+        GraphicHelper().save_graphic(plt)
