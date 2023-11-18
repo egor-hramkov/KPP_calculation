@@ -6,7 +6,7 @@ from pandas import DataFrame
 
 @dataclass
 class CoefficientTurnoversToFuelService:
-    """Рассчитывает коэффициент влияния мощности на расход топлива"""
+    """Рассчитывает коэффициент влияния оборотов двигатея на расход топлива"""
     frequency_turns_per_min: list
     coefficient_influence_power_on_fuel_consumption_data: DataFrame
     total_force_wheel_ideal_conditions_data: DataFrame
@@ -32,9 +32,9 @@ class CoefficientTurnoversToFuelService:
         return coefficients
 
     def show_graphic(self):
-        """График коэффициента влияния мощности на расход топлива"""
+        """График коэффициента влияния оборотов двигателя на расход топлива"""
         plt.xlabel("Частота, об/мин")
-        plt.title('Коэффициент влияния мощности на расход топлива')
+        plt.title('Коэффициент влияния оборотов двигателя на расход топлива')
         plt.plot(self.frequency_turns_per_min, self.coefficients)
         plt.legend()
         plt.grid(axis='y')
