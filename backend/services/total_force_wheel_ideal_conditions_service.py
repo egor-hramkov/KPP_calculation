@@ -11,7 +11,9 @@ from utils.table_helper import TableHelper
 @dataclass
 class TotalForceWheelIdealConditionsService:
     km_per_hour_array: numpy.array
+    total_resistance_force_movement_dataset: DataFrame
     rolling_resistance_dataset: DataFrame
+
     speed_car_dataset: DataFrame
     polynom_dataset: DataFrame
     dependence_torque_on_air_resistance_dataset: DataFrame
@@ -19,6 +21,9 @@ class TotalForceWheelIdealConditionsService:
     kpd_dataset: DataFrame
 
     def __post_init__(self):
+        self.total_resistance_force_movement = self.total_resistance_force_movement_dataset['Сила подъёма'][4]
+
+
         self.rolling_resistance_array = self.rolling_resistance_dataset[
             '1.Хорошее состояние сухого асфальта'].to_numpy()
         self.min_frequency = self.speed_car_dataset['Частота оборотов двигателя'][0]
