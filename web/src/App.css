@@ -1,0 +1,45 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  margin: 0;
+}
+
+.main-wrapper {
+  display: flex;
+  height: 100%;
+  flex-wrap: wrap;
+  padding: 10px;
+  gap: 10px;
+}
+
+.main-wrapper > div {
+  flex: 1 1 0;
+}
+
+.code-editor {
+  height: 100%;
+  overflow: auto !important;
+}
+
+.dropbox {
+  background-color: #d7dbde;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 12px;
+  transition: .2s;
+  border: 2px dashed #95a5a6;
+}
+
+.dropbox:hover {
+  background-color: #bdc3c7;
+}
