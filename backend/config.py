@@ -14,3 +14,6 @@ conf = {
         'tools.decode.on': True
     },
 }
+
+BASE_DIR = os.path.abspath(os.path.curdir)
+GRAPHICS_DIR = BASE_DIR + '\\static\\graphics'

@@ -2,6 +2,8 @@ from dataclasses import dataclass
 from pandas import DataFrame
 import matplotlib.pyplot as plt
 
+from config import GRAPHICS_DIR
+
 
 @dataclass
 class SpeedCarService:
@@ -83,4 +85,4 @@ class SpeedCarService:
         plt.plot(self.frequency_turns_per_min, self.speed_hub5, label='5 передача')
         plt.legend()
         plt.grid(axis='y')
-        plt.show()
+        plt.savefig(f'{GRAPHICS_DIR}/graph1.png')
