@@ -317,7 +317,7 @@ class Main:
         rolling_resistance.name = 'Коэффициенты сопротивления качению'
         all_dataframes.append(rolling_resistance)
 
-        # таблица суммарной силы сопротивлению движения
+        # таблица силы сопротивлению движения
         total_resistance_force_movement_service = TotalResistanceForceMovementService(
             [-20, -15, -10, -5, 0, 5, 10, 15, 20],
             full_mass)
