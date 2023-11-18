@@ -25,9 +25,11 @@ from utils.json_helper import JSONHelper
 
 class Main:
 
-    def __init__(self):
-        file_json = open('source/config.json')
-        config = json.load(file_json)
+    def __init__(self, config: dict = None):
+        if config is None:
+            file_json = open('source/config.json')
+            config = json.load(file_json)
+
         frequency_turns_per_min = config['data']['frequency_turns_per_min']
         all_dataframes: list[DataFrame] = []
 

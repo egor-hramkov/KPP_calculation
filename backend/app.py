@@ -16,12 +16,10 @@ class CherryApp:
     @cherrypy.tools.json_in()
     def POST(self):
         """Метод рассчёта всех параметров и возврата json-файла"""
-        # ToDo Храмков - планирую что этот метод будет обрабатывать основной POST запрос на рассчёт параметров
         params = cherrypy.request.json
         if not params:
             return {'error': 'EMPTY PARAMS'}
-
-        return {"data": Main().response}
+        return {"data": Main(params).response}
 
 
 if __name__ == '__main__':
