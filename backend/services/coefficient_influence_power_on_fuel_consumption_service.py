@@ -1,13 +1,14 @@
 from dataclasses import dataclass
 
+import matplotlib.pyplot as plt
 from pandas import DataFrame
 
 
 @dataclass
 class CoefficientInfluencePowerOnFuelConsumptionService:
-    torque_on_wheel_dataset:DataFrame
-    air_resistance_dataset:DataFrame
-
+    """коэффициент влияния мощности на расход топлива"""
+    torque_on_wheel_dataset: DataFrame
+    air_resistance_dataset: DataFrame
 
     def __post_init__(self):
         self.frequency_array = self.torque_on_wheel_dataset['Частота оборотов двигателя'].to_numpy()
@@ -21,6 +22,7 @@ class CoefficientInfluencePowerOnFuelConsumptionService:
         self.air_resistance_hub3 = self.air_resistance_dataset['Передача 3'].to_numpy()
         self.air_resistance_hub4 = self.air_resistance_dataset['Передача 4'].to_numpy()
         self.air_resistance_hub5 = self.air_resistance_dataset['Передача 5'].to_numpy()
+        self.show_graphic()
 
     @property
     def coefs_hub1(self):
@@ -45,6 +47,20 @@ class CoefficientInfluencePowerOnFuelConsumptionService:
     def __calculate_coefs_hub(self, torque_on_wheel_hub, air_resistance_hub):
         coefs = []
         for torque, air_resistance in zip(torque_on_wheel_hub, air_resistance_hub):
-            coef = 3.27-8.22*(air_resistance/torque)+9.13*((air_resistance/torque)**2)-3.18*((air_resistance/torque)**3)
+            coef = 3.27 - 8.22 * (air_resistance / torque) + 9.13 * ((air_resistance / torque) ** 2) - 3.18 * (
+                    (air_resistance / torque) ** 3)
             coefs.append(coef)
         return coefs
+
+    def show_graphic(self):
+        """График коэффициента влияния мощности на расход топлива"""
+        plt.xlabel("Частота, об/мин")
+        plt.title('Коэффициент влияния мощности на расход топлива')
+        plt.plot(self.frequency_array, self.coefs_hub1, label='1 Передача')
+        plt.plot(self.frequency_array, self.coefs_hub2, label='2 Передача')
+        plt.plot(self.frequency_array, self.coefs_hub3, label='3 Передача')
+        plt.plot(self.frequency_array, self.coefs_hub4, label='4 Передача')
+        plt.plot(self.frequency_array, self.coefs_hub5, label='5 Передача')
+        plt.legend()
+        plt.grid(axis='y')
+        plt.show()
