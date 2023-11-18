@@ -2,6 +2,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import "./App.css";
 import CodeEditor from "@uiw/react-textarea-code-editor";
 import { useDropzone } from "react-dropzone";
+// import { kppApi } from "./api/apiClient";
+
+// const apiClient = new kppApi();
 
 function App() {
   const [code, setCode] = useState<string>();
@@ -15,22 +18,27 @@ function App() {
     console.log(code);
   },[code])
 
+  // const getList = useCallback(() => {
+  //   apiClient.get().then((res) => console.log(res))
+  // }, [])
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
-    <>
-      <div {...getRootProps()}>
+    <section className="main-wrapper">
+      <div {...getRootProps()} className="dropbox">
         <input {...getInputProps()} />
         {isDragActive ? (
           <p>Drop the files here ...</p>
         ) : (
-          <p>Drag 'n' drop some files here, or click to select files</p>
+          <p>Переместите или выберете файл JSON</p>
         )}
       </div>
       <CodeEditor
         value={code}
         language="json"
         placeholder="Вставьте код JSON."
+        className="code-editor"
         onChange={(evn) => setCode(evn.target.value)}
         padding={15}
         style={{
@@ -40,7 +48,7 @@ function App() {
             "ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace",
         }}
       />
-    </>
+    </section>
   );
 }
 

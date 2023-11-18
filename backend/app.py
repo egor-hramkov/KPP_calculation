@@ -3,7 +3,6 @@ import cherrypy
 from config import conf
 from main import Main
 
-
 @cherrypy.expose
 class CherryApp:
     """Основной класс для бэкэнда веб-приложения"""
