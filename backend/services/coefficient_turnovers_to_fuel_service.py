@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+import numpy
 from matplotlib import pyplot as plt
 
 from utils.graphic_helper import GraphicHelper
@@ -7,26 +8,26 @@ from utils.graphic_helper import GraphicHelper
 
 @dataclass
 class CoefficientTurnoversToFuelService:
-    """Рассчитывает коэффициент влияния оборотов двигатея на расход топлива"""
-    frequency_turns_per_min: list
+    """Сервис для формирования таблицы коэффициентов влияния оборотов двигателя на расход топлива"""
+    frequency_turns_per_min: numpy.array
 
-    def __post_init__(self):
-        self.coefficients = self.__calculate_coefficients()
-        self.show_graphic()
+    @property
+    def coefs(self):
+        return self.__calculate_coefs_effect_engine_speed_on_fuel_consumption()
 
-    def __calculate_coefficients(self) -> list:
-        coefficients = []
-        for frequency in self.frequency_turns_per_min:
-            coef = 1.25 - 0.99 * (frequency / self.frequency_turns_per_min[-1]) + 0.98 * \
-                (frequency / self.frequency_turns_per_min[-1]) ** 2 - 0.24 * (frequency / self.frequency_turns_per_min[-1]) ** 3
-            coefficients.append(coef)
-        return coefficients
+    def __calculate_coefs_effect_engine_speed_on_fuel_consumption(self):
+        coefs = []
+        max_turn = self.frequency_turns_per_min[-1]
+        for turn in self.frequency_turns_per_min:
+            coef = 1.25 - 0.99 * (turn / max_turn) + 0.98 * ((turn / max_turn) ** 2) - 0.24 * ((turn / max_turn) ** 3)
+            coefs.append(coef)
+        return coefs
 
     def show_graphic(self):
         """График коэффициента влияния оборотов двигателя на расход топлива"""
         plt.xlabel("Частота, об/мин")
-        plt.title('Коэффициент влияния оборотов двигателя на расход топлива')
-        plt.plot(self.frequency_turns_per_min, self.coefficients)
+        plt.title('Коэффициенты влияния оборотов двигателя на расход топлива')
+        plt.plot(self.frequency_turns_per_min, self.coefs)
         plt.legend()
         plt.grid(axis='y')
         GraphicHelper().save_graphic(plt)

@@ -15,8 +15,8 @@ class FuelConsumptionService:
     frequency_turns_per_min: list
 
     def __post_init__(self):
-        self.frequency_array = self.influence_turnovers_of_fuel_consumption_dataset['Частота об/м'].to_numpy()
-        self.coefs_tutnoverse_on_fuel = self.influence_turnovers_of_fuel_consumption_dataset['Коэффиценты'].to_numpy()
+        self.frequency_array = self.influence_turnovers_of_fuel_consumption_dataset['Частота об/мин'].to_numpy()
+        self.coefs_tutnoverse_on_fuel = self.influence_turnovers_of_fuel_consumption_dataset['Коэффициенты'].to_numpy()
         self.coefs_power_on_fuel_hub1 = self.influence_power_on_fuel_consumption_dataset['Передача 1'].to_numpy()
         self.coefs_power_on_fuel_hub2 = self.influence_power_on_fuel_consumption_dataset['Передача 2'].to_numpy()
         self.coefs_power_on_fuel_hub3 = self.influence_power_on_fuel_consumption_dataset['Передача 3'].to_numpy()
