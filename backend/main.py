@@ -9,6 +9,7 @@ from services.coefficient_influence_power_on_fuel_consumption_service import \
 from services.coefficient_turnovers_to_fuel_service import CoefficientTurnoversToFuelService
 from services.dependence_torque_on_air_resistance_service import DependenceOfTorqueOnAirResistanceService
 from services.dynamic_factor_service import DynamicFactorService
+from services.fuel_consumption_100km_minimum_load_service import FuelConsumption100kmMinimumLoadService
 from services.fuel_consumption_service import FuelConsumptionService
 from services.gear_ratio_service import GearRatioService
 from services.power_and_torque import PowerAndTorqueService
@@ -435,8 +436,7 @@ class Main:
         coefficient_turnovers_to_fuel.name = 'Таблица коэффициентов влияния оборотов двигателя на расход топлива'
         all_dataframes.append(coefficient_turnovers_to_fuel)
 
-
-        #таблица коэффициентов влияния мощьности на расход топлива / коэффициент влияния мощьности на расход топлива
+        # таблица коэффициентов влияния мощьности на расход топлива / коэффициент влияния мощьности на расход топлива
         coefficient_influence_power_on_fuel_consumption_service = CoefficientInfluencePowerOnFuelConsumptionService(
             torque_on_wheel, air_resistance)
         influence_power_on_fuel_consumption = pd.DataFrame()
@@ -457,8 +457,7 @@ class Main:
         influence_power_on_fuel_consumption.name = 'Коэффициенты влияния мощности на расход топлива'
         all_dataframes.append(influence_power_on_fuel_consumption)
 
-
-        #таблица расхода топлива в час / расход топлива автомобиля в час
+        # таблица расхода топлива в час / расход топлива автомобиля в час
         fuel_consumption_service = FuelConsumptionService(coefficient_turnovers_to_fuel,
                                                           influence_power_on_fuel_consumption, air_resistance,
                                                           frequency_turns_per_min)
@@ -473,6 +472,27 @@ class Main:
 
         fuel_consumption.name = 'Расход топлива автомобиля'
         all_dataframes.append(fuel_consumption)
+
+        # таблица расхода топлива на 100 км при минимальной нагрузке / расход топлива автомобиля на 100км  для минимальной нагрузки
+        fuel_consumption_100km_minimum_load_service = FuelConsumption100kmMinimumLoadService(frequency_turns_per_min,
+                                                                                             fuel_consumption,
+                                                                                             speed_car)
+        fuel_consumption_100km_minimum_load = DataFrame()
+        fuel_consumption_100km_minimum_load[
+            'Частота об/м'] = fuel_consumption_100km_minimum_load_service.frequency_turns_per_min
+        fuel_consumption_100km_minimum_load[
+            'Передача 1'] = fuel_consumption_100km_minimum_load_service.calculate_fuel_consumption_hub1
+        fuel_consumption_100km_minimum_load[
+            'Передача 2'] = fuel_consumption_100km_minimum_load_service.calculate_fuel_consumption_hub2
+        fuel_consumption_100km_minimum_load[
+            'Передача 3'] = fuel_consumption_100km_minimum_load_service.calculate_fuel_consumption_hub3
+        fuel_consumption_100km_minimum_load[
+            'Передача 4'] = fuel_consumption_100km_minimum_load_service.calculate_fuel_consumption_hub4
+        fuel_consumption_100km_minimum_load[
+            'Передача 5'] = fuel_consumption_100km_minimum_load_service.calculate_fuel_consumption_hub5
+
+        fuel_consumption_100km_minimum_load.name = 'Расход топлива автомобиля на 100км  для минимальной нагрузки'
+        all_dataframes.append(fuel_consumption_100km_minimum_load)
 
 
         # таблица расчёта динамического фактора
