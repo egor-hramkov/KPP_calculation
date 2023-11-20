@@ -500,12 +500,12 @@ class Main:
 
 
         # таблица без названия строки 573-604 excel / Мощность на колесе и расход топлива на 100 км (название взято из word)
-        power_on_wheel_fuel_consumption_100km_service = PowerOnWheelFuelConsumption100kmService()
+        # power_on_wheel_fuel_consumption_100km_service = PowerOnWheelFuelConsumption100kmService()
         # TODO:нужно доделать, требует таблиц, которых ещё нет
 
 
         # таблица коэффициентов влияния мощности на расход топлива при максимальных нагрузках / коэффициент влияния мощности на расход топлива при максимальных нагрузках
-        coefficient_influence_power_fuel_consumption_maximum_loads_service = CoefficientInfluencePowerFuelConsumptionMaximumLoadsService()
+        # coefficient_influence_power_fuel_consumption_maximum_loads_service = CoefficientInfluencePowerFuelConsumptionMaximumLoadsService()
         #TODO:нужно сделать - заебался на сегодня
 
 
