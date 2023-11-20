@@ -2,9 +2,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import "./App.css";
 import CodeEditor from "@uiw/react-textarea-code-editor";
 import { useDropzone } from "react-dropzone";
-// import { kppApi } from "./api/apiClient";
+import { kppApi } from "./api/apiClient";
 
-// const apiClient = new kppApi();
+const apiClient = new kppApi();
 
 function App() {
   const [code, setCode] = useState<string>();
@@ -15,12 +15,8 @@ function App() {
   }, [decoder]);
 
   useEffect(() => {
-    console.log(code);
-  },[code])
-
-  // const getList = useCallback(() => {
-  //   apiClient.get().then((res) => console.log(res))
-  // }, [])
+    apiClient.get().then((res) => console.log(res.data))
+  },[])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
