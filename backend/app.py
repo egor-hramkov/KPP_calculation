@@ -3,6 +3,7 @@ import cherrypy
 from config import conf
 from main import Main
 
+
 @cherrypy.expose
 class CherryApp:
     """Основной класс для бэкэнда веб-приложения"""
@@ -22,4 +23,7 @@ class CherryApp:
 
 
 if __name__ == '__main__':
+    import cherrypy_cors
+
+    cherrypy_cors.install()
     cherrypy.quickstart(CherryApp(), '/', conf)

@@ -391,39 +391,39 @@ class Main:
         total_power_car_each_hub.name = 'Суммарная мощьность автомобиля на каждой передаче'
         all_dataframes.append(total_power_car_each_hub)
 
-        # суммарная сила на колесе в идеальных условиях
-        total_force_wheel_ideal_conditions_service = TotalForceWheelIdealConditionsService(km_per_hour,
-                                                                                           rolling_resistance,
-                                                                                           speed_car,
-                                                                                           coefficient_polynom,
-                                                                                           dependence_torque_on_air_resistance,
-                                                                                           gear_ratio_info, kpd)
-        total_force_wheel_ideal_conditions = pd.DataFrame()
-        total_force_wheel_ideal_conditions['Км/ч'] = total_force_wheel_ideal_conditions_service.km_per_hour_array
-        total_force_wheel_ideal_conditions[
-            'Сумма сопротивления'] = total_force_wheel_ideal_conditions_service.air_resistance_array
-        total_force_wheel_ideal_conditions[
-            'Обороты 1 передача'] = total_force_wheel_ideal_conditions_service.turnovers_hub1
-        total_force_wheel_ideal_conditions[
-            'Крутящий момент 1 передача'] = total_force_wheel_ideal_conditions_service.force_on_wheel_hub1
-        total_force_wheel_ideal_conditions[
-            'Обороты 2 передача'] = total_force_wheel_ideal_conditions_service.turnovers_hub2
-        total_force_wheel_ideal_conditions[
-            'Крутящий момент 2 передача'] = total_force_wheel_ideal_conditions_service.force_on_wheel_hub2
-        total_force_wheel_ideal_conditions[
-            'Обороты 3 передача'] = total_force_wheel_ideal_conditions_service.turnovers_hub3
-        total_force_wheel_ideal_conditions[
-            'Крутящий момент 3 передача'] = total_force_wheel_ideal_conditions_service.force_on_wheel_hub3
-        total_force_wheel_ideal_conditions[
-            'Обороты 4 передача'] = total_force_wheel_ideal_conditions_service.turnovers_hub4
-        total_force_wheel_ideal_conditions[
-            'Крутящий момент 4 передача'] = total_force_wheel_ideal_conditions_service.force_on_wheel_hub4
-        total_force_wheel_ideal_conditions[
-            'Обороты 5 передача'] = total_force_wheel_ideal_conditions_service.turnovers_hub5
-        total_force_wheel_ideal_conditions[
-            'Крутящий момент 5 передача'] = total_force_wheel_ideal_conditions_service.force_on_wheel_hub5
-        total_force_wheel_ideal_conditions.name = 'Суммарная сила на колесе в идеальных условиях'
-        all_dataframes.append(total_force_wheel_ideal_conditions)
+        # # суммарная сила на колесе в идеальных условиях
+        # total_force_wheel_ideal_conditions_service = TotalForceWheelIdealConditionsService(km_per_hour,
+        #                                                                                    rolling_resistance,
+        #                                                                                    speed_car,
+        #                                                                                    coefficient_polynom,
+        #                                                                                    dependence_torque_on_air_resistance,
+        #                                                                                    gear_ratio_info, kpd)
+        # total_force_wheel_ideal_conditions = pd.DataFrame()
+        # total_force_wheel_ideal_conditions['Км/ч'] = total_force_wheel_ideal_conditions_service.km_per_hour_array
+        # total_force_wheel_ideal_conditions[
+        #     'Сумма сопротивления'] = total_force_wheel_ideal_conditions_service.air_resistance_array
+        # total_force_wheel_ideal_conditions[
+        #     'Обороты 1 передача'] = total_force_wheel_ideal_conditions_service.turnovers_hub1
+        # total_force_wheel_ideal_conditions[
+        #     'Крутящий момент 1 передача'] = total_force_wheel_ideal_conditions_service.force_on_wheel_hub1
+        # total_force_wheel_ideal_conditions[
+        #     'Обороты 2 передача'] = total_force_wheel_ideal_conditions_service.turnovers_hub2
+        # total_force_wheel_ideal_conditions[
+        #     'Крутящий момент 2 передача'] = total_force_wheel_ideal_conditions_service.force_on_wheel_hub2
+        # total_force_wheel_ideal_conditions[
+        #     'Обороты 3 передача'] = total_force_wheel_ideal_conditions_service.turnovers_hub3
+        # total_force_wheel_ideal_conditions[
+        #     'Крутящий момент 3 передача'] = total_force_wheel_ideal_conditions_service.force_on_wheel_hub3
+        # total_force_wheel_ideal_conditions[
+        #     'Обороты 4 передача'] = total_force_wheel_ideal_conditions_service.turnovers_hub4
+        # total_force_wheel_ideal_conditions[
+        #     'Крутящий момент 4 передача'] = total_force_wheel_ideal_conditions_service.force_on_wheel_hub4
+        # total_force_wheel_ideal_conditions[
+        #     'Обороты 5 передача'] = total_force_wheel_ideal_conditions_service.turnovers_hub5
+        # total_force_wheel_ideal_conditions[
+        #     'Крутящий момент 5 передача'] = total_force_wheel_ideal_conditions_service.force_on_wheel_hub5
+        # total_force_wheel_ideal_conditions.name = 'Суммарная сила на колесе в идеальных условиях'
+        # all_dataframes.append(total_force_wheel_ideal_conditions)
 
         # таблица расчёта динамического фактора
         dynamic_factor_service = DynamicFactorService(km_per_hour, speed_car, coefficient_polynom, wheel_info_table,
