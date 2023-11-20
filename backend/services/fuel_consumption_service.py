@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+import numpy
 from matplotlib import pyplot as plt
 from pandas import DataFrame
 
@@ -8,52 +9,63 @@ from utils.graphic_helper import GraphicHelper
 
 @dataclass
 class FuelConsumptionService:
-    """Сервис по расчёту расхода топлива автомобиля"""
-    influence_turnovers_of_fuel_consumption_dataset: DataFrame
-    influence_power_on_fuel_consumption_dataset: DataFrame
-    air_resistance_dataset: DataFrame
-    frequency_turns_per_min: list
+    """Сервис по расчёту расхода топлива автомобиля в час"""
+    frequency_turns_per_min: numpy.array
+    coefficient_turnovers_to_fuel_dataset: DataFrame
+    coefficient_influence_power_on_fuel_consumption_dataset: DataFrame
+    total_force_resistance_movement_dataset: DataFrame
 
     def __post_init__(self):
-        self.frequency_array = self.influence_turnovers_of_fuel_consumption_dataset['Частота об/мин'].to_numpy()
-        self.coefs_tutnoverse_on_fuel = self.influence_turnovers_of_fuel_consumption_dataset['Коэффициенты'].to_numpy()
-        self.coefs_power_on_fuel_hub1 = self.influence_power_on_fuel_consumption_dataset['Передача 1'].to_numpy()
-        self.coefs_power_on_fuel_hub2 = self.influence_power_on_fuel_consumption_dataset['Передача 2'].to_numpy()
-        self.coefs_power_on_fuel_hub3 = self.influence_power_on_fuel_consumption_dataset['Передача 3'].to_numpy()
-        self.coefs_power_on_fuel_hub4 = self.influence_power_on_fuel_consumption_dataset['Передача 4'].to_numpy()
-        self.coefs_power_on_fuel_hub5 = self.influence_power_on_fuel_consumption_dataset['Передача 5'].to_numpy()
-        self.air_resistance_hub1 = self.air_resistance_dataset['Передача 1'].to_numpy()
-        self.air_resistance_hub2 = self.air_resistance_dataset['Передача 2'].to_numpy()
-        self.air_resistance_hub3 = self.air_resistance_dataset['Передача 3'].to_numpy()
-        self.air_resistance_hub4 = self.air_resistance_dataset['Передача 4'].to_numpy()
-        self.air_resistance_hub5 = self.air_resistance_dataset['Передача 5'].to_numpy()
+        self.coefs_turnovers_to_fuel = self.coefficient_turnovers_to_fuel_dataset['Коэффициенты']
+        self.coefficient_influence_power_on_fuel_consumption_hub1 = \
+            self.coefficient_influence_power_on_fuel_consumption_dataset['Передача 1']
+        self.coefficient_influence_power_on_fuel_consumption_hub2 = \
+            self.coefficient_influence_power_on_fuel_consumption_dataset['Передача 2']
+        self.coefficient_influence_power_on_fuel_consumption_hub3 = \
+            self.coefficient_influence_power_on_fuel_consumption_dataset['Передача 3']
+        self.coefficient_influence_power_on_fuel_consumption_hub4 = \
+            self.coefficient_influence_power_on_fuel_consumption_dataset['Передача 4']
+        self.coefficient_influence_power_on_fuel_consumption_hub5 = \
+            self.coefficient_influence_power_on_fuel_consumption_dataset['Передача 5']
+        self.total_force_resistance_movement_hub1 = self.total_force_resistance_movement_dataset['1 передача']
+        self.total_force_resistance_movement_hub2 = self.total_force_resistance_movement_dataset['2 передача']
+        self.total_force_resistance_movement_hub3 = self.total_force_resistance_movement_dataset['3 передача']
+        self.total_force_resistance_movement_hub4 = self.total_force_resistance_movement_dataset['4 передача']
+        self.total_force_resistance_movement_hub5 = self.total_force_resistance_movement_dataset['5 передача']
         self.show_graphic()
 
     @property
     def fuel_consumption_hub1(self):
-        return self.__calculate_fuel_consumption_hub(self.coefs_power_on_fuel_hub1, self.air_resistance_hub1)
+        return self.__calculate_fuel_consumption_hub(self.coefficient_influence_power_on_fuel_consumption_hub1,
+                                                     self.total_force_resistance_movement_hub1)
 
     @property
     def fuel_consumption_hub2(self):
-        return self.__calculate_fuel_consumption_hub(self.coefs_power_on_fuel_hub2, self.air_resistance_hub2)
+        return self.__calculate_fuel_consumption_hub(self.coefficient_influence_power_on_fuel_consumption_hub2,
+                                                     self.total_force_resistance_movement_hub2)
 
     @property
     def fuel_consumption_hub3(self):
-        return self.__calculate_fuel_consumption_hub(self.coefs_power_on_fuel_hub3, self.air_resistance_hub3)
+        return self.__calculate_fuel_consumption_hub(self.coefficient_influence_power_on_fuel_consumption_hub3,
+                                                     self.total_force_resistance_movement_hub3)
 
     @property
     def fuel_consumption_hub4(self):
-        return self.__calculate_fuel_consumption_hub(self.coefs_power_on_fuel_hub4, self.air_resistance_hub4)
+        return self.__calculate_fuel_consumption_hub(self.coefficient_influence_power_on_fuel_consumption_hub4,
+                                                     self.total_force_resistance_movement_hub4)
 
     @property
     def fuel_consumption_hub5(self):
-        return self.__calculate_fuel_consumption_hub(self.coefs_power_on_fuel_hub5, self.air_resistance_hub5)
+        return self.__calculate_fuel_consumption_hub(self.coefficient_influence_power_on_fuel_consumption_hub5,
+                                                     self.total_force_resistance_movement_hub5)
 
-    def __calculate_fuel_consumption_hub(self, coefs_power_on_fuel_hub, air_resistance_hub):
+    def __calculate_fuel_consumption_hub(self, coefficient_influence_power_on_fuel_consumption_hub,
+                                         total_force_resistance_movement_hub):
         consumptions = []
-        for coef_turnoverse, coef_power, air_resistance in zip(self.coefs_tutnoverse_on_fuel, coefs_power_on_fuel_hub,
-                                                               air_resistance_hub):
-            consumptions.append(coef_power * 270 / (36000 * 0.73) * air_resistance)
+        for coefficient, total, coef_turnovers_to_fuel in zip(coefficient_influence_power_on_fuel_consumption_hub,
+                                                              total_force_resistance_movement_hub,
+                                                              self.coefs_turnovers_to_fuel):
+            consumptions.append(coef_turnovers_to_fuel * coefficient * 370 / (36000 * 0.73) * total)
         return consumptions
 
     def show_graphic(self):
