@@ -1,50 +1,63 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import "./App.css";
+import { useCallback, useEffect, useState } from "react";
+import "./App.scss";
 import CodeEditor from "@uiw/react-textarea-code-editor";
-import { useDropzone } from "react-dropzone";
 import { kppApi } from "./api/apiClient";
+import { DataList } from "./DataList/DataList";
+import { TablesModal } from "./TablesView/TablesModal";
+import { Aside } from "./ui/Aside";
+import useAsideStore from "./store/AsideStore";
+import { shallow } from "zustand/shallow";
 
 const apiClient = new kppApi();
 
 function App() {
-  const [code, setCode] = useState<string>();
-  const decoder = useMemo(() => new TextDecoder("utf-8"),[]);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const { setCode, setNodes } = useAsideStore((state) => state, shallow);
+  const nodes = useAsideStore((state) => state.nodes, shallow);
+  const code = useAsideStore((state) => state.code, shallow);
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    acceptedFiles[0].arrayBuffer().then((item) => decoder.decode(new Uint8Array(item))).then((item) => setCode(item));
-  }, [decoder]);
+  const parser = useCallback((data: { data: object }) => {
+    Object.entries(data.data).map((item, index) => {
+      if (item[0] && item[1]) {
+        setNodes(<DataList key={index} title={item[0]} list={item[1]} />);
+      }
+    });
+  }, [setNodes]);
 
   useEffect(() => {
-    apiClient.get().then((res) => console.log(res.data))
-  },[])
+    apiClient.get().then((res) => {
+      parser(res.data);
+      setShowModal(true);
+    });
+  }, [parser]);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  // const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
-    <section className="main-wrapper">
-      <div {...getRootProps()} className="dropbox">
-        <input {...getInputProps()} />
-        {isDragActive ? (
-          <p>Drop the files here ...</p>
-        ) : (
-          <p>Переместите или выберете файл JSON</p>
-        )}
-      </div>
-      <CodeEditor
-        value={code}
-        language="json"
-        placeholder="Вставьте код JSON."
-        className="code-editor"
-        onChange={(evn) => setCode(evn.target.value)}
-        padding={15}
-        style={{
-          fontSize: 12,
-          backgroundColor: "#f5f5f5",
-          fontFamily:
-            "ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace",
-        }}
+    <>
+      <TablesModal
+        nodes={nodes}
+        show={showModal}
+        onExit={() => setShowModal(false)}
       />
-    </section>
+      <section className="main-wrapper">
+        <Aside />
+        <CodeEditor
+          value={code}
+          language="json"
+          placeholder="Вставьте код JSON."
+          className="code-editor"
+          onChange={(evn) => setCode(evn.target.value)}
+          padding={15}
+          style={{
+            fontSize: 12,
+            backgroundColor: "#f5f5f5",
+            fontFamily:
+              "ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace",
+          }}
+        />
+      </section>
+    </>
   );
 }
 
