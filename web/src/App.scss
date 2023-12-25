@@ -16,16 +16,21 @@ body,
   height: 100%;
   flex-wrap: wrap;
   padding: 10px;
-  gap: 10px;
-}
-
-.main-wrapper > div {
-  flex: 1 1 0;
+  background-color: #0f1010;
 }
 
 .code-editor {
   height: 100%;
+  flex: 1;
   overflow: auto !important;
+}
+
+.control-section {
+  .btn-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
 }
 
 .dropbox {
@@ -34,12 +39,13 @@ body,
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas,
+    "Liberation Mono", Menlo, monospace;
   font-size: 12px;
-  transition: .2s;
+  transition: 0.2s;
   border: 2px dashed #95a5a6;
-}
 
-.dropbox:hover {
-  background-color: #bdc3c7;
+  &:hover {
+    background-color: #bdc3c7;
+  }
 }
