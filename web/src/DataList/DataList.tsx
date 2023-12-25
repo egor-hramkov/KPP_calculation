@@ -5,7 +5,7 @@ interface Props {
   title: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   list: object;
-  key: number;
+  key1: number;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -64,7 +64,7 @@ export const DataList = (props: Props) => {
           ))}
         </tbody>
       </table>
-      <img src={`http://localhost:80/static/graphics/graph_${props.key + 1}.png`} />
+      <img src={`http://localhost:8080/static/graphics/graph_${props.key1 + 1}.png`} />
     </section>
   );
 };

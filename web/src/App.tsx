@@ -19,7 +19,7 @@ function App() {
   const parser = useCallback((data: { data: object }) => {
     Object.entries(data.data).map((item, index) => {
       if (item[0] && item[1]) {
-        setNodes(<DataList key={index} title={item[0]} list={item[1]} />);
+        setNodes(<DataList key={index} key1={index} title={item[0]} list={item[1]} />);
       }
     });
   }, [setNodes]);
