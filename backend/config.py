@@ -2,6 +2,7 @@ import os
 
 import cherrypy
 
+folder = os.path.abspath(os.curdir)
 conf = {
     'global': {'server.socket_host': '0.0.0.0', 'server.socket_port': 8080},
     '/': {
@@ -14,6 +15,11 @@ conf = {
         'tools.encode.encoding': 'utf-8',
         'tools.decode.on': True
     },
+    '/static': {
+        'tools.staticdir.on': True,
+        'tools.staticdir.dir': os.path.join(folder, 'static'),
+        'tools.staticdir.content_types': {'html': 'application/octet-stream'}
+    }
 }
 
 BASE_DIR = os.path.abspath(os.path.curdir)
