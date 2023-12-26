@@ -33,6 +33,10 @@ body,
   position: absolute;
   border-radius: 5px;
   cursor: pointer;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
   bottom: 15px;
   right: 15px;
   font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas,

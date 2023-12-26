@@ -4,7 +4,7 @@ import { IoClose } from "react-icons/io5";
 
 interface Props {
   show: boolean;
-  nodes: ReactElement[];
+  nodes?: ReactElement[];
   onExit: () => void;
 }
 
@@ -20,7 +20,7 @@ export const TablesModal = (props: Props) => {
         </button>
       </div>
       <section className="tables-section">
-        {props.nodes.map((item) => item)}
+        {props.nodes && props.nodes.map((item) => item)}
       </section>
     </section>
   );

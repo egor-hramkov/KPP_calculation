@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import "./App.scss";
 import CodeEditor from "@uiw/react-textarea-code-editor";
 import { kppApi } from "./api/apiClient";
@@ -7,12 +7,14 @@ import { TablesModal } from "./TablesView/TablesModal";
 import { Aside } from "./ui/Aside";
 import useAsideStore from "./store/AsideStore";
 import { shallow } from "zustand/shallow";
+import { BeatLoader } from "react-spinners";
 
 const apiClient = new kppApi();
 
 function App() {
   const [showModal, setShowModal] = useState<boolean>(false);
-  const { setCode, setNodes } = useAsideStore((state) => state, shallow);
+  const [loading, setLoading] = useState<boolean>(false);
+  const { setCode, setNodes, nullNodes } = useAsideStore((state) => state, shallow);
   const nodes = useAsideStore((state) => state.nodes, shallow);
   const code = useAsideStore((state) => state.code, shallow);
 
@@ -30,18 +32,13 @@ function App() {
   );
 
   const sendData = useCallback(() => {
+    nullNodes();
+    setLoading(true);
     apiClient
       .post(code)
       .then((res) => parser(res.data))
-      .then(() => setShowModal(true))
+      .then(() => { setShowModal(true); setLoading(false) })
   }, [code, setNodes]);
-
-  useEffect(() => {
-    apiClient.get().then((res) => {
-      parser(res.data);
-      setShowModal(true);
-    });
-  }, [parser]);
 
   return (
     <>
@@ -66,11 +63,11 @@ function App() {
               "ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace",
           }}
         />
-        {code && (
+        {code &&
           <button className="send-btn" onClick={() => sendData()}>
-            Запустить
+            Запустить<BeatLoader color="#fff" loading={loading} size={4}/>
           </button>
-        )}
+        }
       </section>
     </>
   );
