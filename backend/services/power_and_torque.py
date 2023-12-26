@@ -17,8 +17,6 @@ class PowerAndTorqueService:
         self.POLYNOMIAL_COEFFICIENTS_TORQUE = [0, 6.51774E-13, -0.0000000104, 3.44758E-05, -0.010124117, 175.1449366]
         self.torques = self.__build_torques()
         self.powers = self.__build_powers()
-        self.show_graphic_torques()
-        self.show_graphic_powers()
 
     def __build_torques(self) -> list:
         """Рассчитывает мощность крутящего момента"""
@@ -39,25 +37,3 @@ class PowerAndTorqueService:
                      + pol_coeffs[3] * (frequency ** 2) + pol_coeffs[4] * frequency + pol_coeffs[5]
             powers.append(torque)
         return powers
-
-    def show_graphic_torques(self):
-        """Построение графика крутящего момента от оборотов двигателя"""
-        plt.clf()
-        plt.ylabel("МКР, Нм")
-        plt.xlabel("Частота, об/мин")
-        plt.title('Крутящий момент от оборотов двигателя')
-        plt.plot(self.frequency_turns_per_min, self.torques, label='Крутящий момент МКР, Нм')
-        plt.legend()
-        plt.grid(axis='y')
-        GraphicHelper().save_graphic(plt)
-
-    def show_graphic_powers(self):
-        """Построение графика мощности от оборотов двигателя"""
-        plt.clf()
-        plt.ylabel("Мощность, л.с.")
-        plt.xlabel("Частота, об/мин")
-        plt.title('Мощность от оборотов двигателя')
-        plt.plot(self.frequency_turns_per_min, self.powers, label='Мощность, л.с.')
-        plt.legend()
-        plt.grid(axis='y')
-        GraphicHelper().save_graphic(plt)

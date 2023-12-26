@@ -150,11 +150,11 @@ class Main:
         coefficient_polynom = pd.DataFrame()
         coefficient_polynom['Данные'] = ['Коэффициент момент', 'Коэффициент мощность']
         coefficient_polynom['X/5'] = [0.0, 0.0]
-        coefficient_polynom['X/4'] = [coefficient_polynom_hm[0], coefficient_polynom_hp[0]]
-        coefficient_polynom['X/3'] = [coefficient_polynom_hm[1], coefficient_polynom_hp[1]]
-        coefficient_polynom['X/2'] = [coefficient_polynom_hm[2], coefficient_polynom_hp[2]]
-        coefficient_polynom['X'] = [coefficient_polynom_hm[3], coefficient_polynom_hp[3]]
-        coefficient_polynom['Собственный коэффициент'] = [coefficient_polynom_hm[4], coefficient_polynom_hp[4]]
+        coefficient_polynom['X/4'] = [coefficient_polynom_hm[0][0], coefficient_polynom_hp[0][0]]
+        coefficient_polynom['X/3'] = [coefficient_polynom_hm[1][0], coefficient_polynom_hp[1][0]]
+        coefficient_polynom['X/2'] = [coefficient_polynom_hm[2][0], coefficient_polynom_hp[2][0]]
+        coefficient_polynom['X'] = [coefficient_polynom_hm[3][0], coefficient_polynom_hp[3][0]]
+        coefficient_polynom['Собственный коэффициент'] = [coefficient_polynom_hm[4][0], coefficient_polynom_hp[4][0]]
 
         coefficient_polynom.name = 'Коэффициенты полинома'
         all_dataframes.append(coefficient_polynom)
