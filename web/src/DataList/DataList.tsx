@@ -64,7 +64,7 @@ export const DataList = (props: Props) => {
           ))}
         </tbody>
       </table>
-      <img src={`http://localhost:8080/static/graphics/graph_${props.key1 + 1}.png`} />
+      <img src={`http://localhost:80/static/graphics/graph_${props.key1 + 1}.png`} />
     </section>
   );
 };

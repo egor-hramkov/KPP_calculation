@@ -5,6 +5,10 @@ export class kppApi {
         return axios.get('http://localhost:80')
     }
     post(data: any) {
-        return axios.post('http://localhost:80', data)
+        return axios.post('http://localhost:80', data, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
     }
 }
