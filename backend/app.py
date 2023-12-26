@@ -1,6 +1,7 @@
 import cherrypy
 
 from config import conf
+import config
 from main import Main
 
 
