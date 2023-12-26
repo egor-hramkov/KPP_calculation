@@ -16,13 +16,25 @@ function App() {
   const nodes = useAsideStore((state) => state.nodes, shallow);
   const code = useAsideStore((state) => state.code, shallow);
 
-  const parser = useCallback((data: { data: object }) => {
-    Object.entries(data.data).map((item, index) => {
-      if (item[0] && item[1]) {
-        setNodes(<DataList key={index} key1={index} title={item[0]} list={item[1]} />);
-      }
-    });
-  }, [setNodes]);
+  const parser = useCallback(
+    (data: { data: object }) => {
+      Object.entries(data.data).map((item, index) => {
+        if (item[0] && item[1]) {
+          setNodes(
+            <DataList key={index} key1={index} title={item[0]} list={item[1]} />
+          );
+        }
+      });
+    },
+    [setNodes]
+  );
+
+  const sendData = useCallback(() => {
+    apiClient
+      .post(code)
+      .then((res) => setNodes(res.data))
+      .then(() => setShowModal(true));
+  }, [code, setNodes]);
 
   useEffect(() => {
     apiClient.get().then((res) => {
@@ -30,8 +42,6 @@ function App() {
       setShowModal(true);
     });
   }, [parser]);
-
-  // const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
     <>
@@ -56,6 +66,11 @@ function App() {
               "ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace",
           }}
         />
+        {code && (
+          <button className="send-btn" onClick={() => sendData()}>
+            Запустить
+          </button>
+        )}
       </section>
     </>
   );
