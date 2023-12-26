@@ -13,8 +13,8 @@ docker compose up -d
 # Для локальной разработки 
 Backend (Python 3.10)
 ~~~
-pip install -r requirements.txt
 cd backend
+pip install -r requirements.txt
 python app.py
 ~~~
 
