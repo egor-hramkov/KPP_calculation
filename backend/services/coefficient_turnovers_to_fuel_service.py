@@ -11,6 +11,9 @@ class CoefficientTurnoversToFuelService:
     """Сервис для формирования таблицы коэффициентов влияния оборотов двигателя на расход топлива"""
     frequency_turns_per_min: numpy.array
 
+    def __post_init__(self):
+        self.show_graphic()
+
     @property
     def coefs(self):
         return self.__calculate_coefs_effect_engine_speed_on_fuel_consumption()
