@@ -32,8 +32,8 @@ function App() {
   const sendData = useCallback(() => {
     apiClient
       .post(code)
-      .then((res) => setNodes(res.data))
-      .then(() => setShowModal(true));
+      .then((res) => parser(res.data))
+      .then(() => setShowModal(true))
   }, [code, setNodes]);
 
   useEffect(() => {
