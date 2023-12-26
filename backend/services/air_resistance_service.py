@@ -74,6 +74,7 @@ class AirResistanceService:
 
     def show_graphic(self):
         """Построение графика сопротивления воздуха"""
+        plt.clf()
         plt.xlabel("Частота, об/мин")
         plt.title('Сопротивление воздуха от оборотов двигателя')
         plt.plot(self.frequency_turns_per_min, self.air_resistance_hub1, label='1 передача')

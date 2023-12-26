@@ -69,6 +69,7 @@ class RollingResistanceService:
 
     def show_graphic(self):
         """График сопротивления качению от скорости"""
+        plt.clf()
         plt.xlabel("км/ч")
         plt.title('Сопротивления качению от скорости')
         plt.plot(self.km_per_hour_array, self.coef_rolling_resistance_type1, label='1')

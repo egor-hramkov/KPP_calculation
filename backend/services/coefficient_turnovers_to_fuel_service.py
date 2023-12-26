@@ -25,6 +25,7 @@ class CoefficientTurnoversToFuelService:
 
     def show_graphic(self):
         """График коэффициента влияния оборотов двигателя на расход топлива"""
+        plt.clf()
         plt.xlabel("Частота, об/мин")
         plt.title('Коэффициенты влияния оборотов двигателя на расход топлива')
         plt.plot(self.frequency_turns_per_min, self.coefs)

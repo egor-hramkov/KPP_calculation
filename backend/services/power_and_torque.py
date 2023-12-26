@@ -42,6 +42,7 @@ class PowerAndTorqueService:
 
     def show_graphic_torques(self):
         """Построение графика крутящего момента от оборотов двигателя"""
+        plt.clf()
         plt.ylabel("МКР, Нм")
         plt.xlabel("Частота, об/мин")
         plt.title('Крутящий момент от оборотов двигателя')
@@ -52,6 +53,7 @@ class PowerAndTorqueService:
 
     def show_graphic_powers(self):
         """Построение графика мощности от оборотов двигателя"""
+        plt.clf()
         plt.ylabel("Мощность, л.с.")
         plt.xlabel("Частота, об/мин")
         plt.title('Мощность от оборотов двигателя')

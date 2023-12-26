@@ -70,6 +70,7 @@ class FuelConsumptionService:
 
     def show_graphic(self):
         """Отрисовывает график расхода топлива автомобиля"""
+        plt.clf()
         plt.xlabel("Частота, об/мин")
         plt.title('Расход топлива автомобиля')
         plt.plot(self.frequency_turns_per_min, self.fuel_consumption_hub1, label='1 передача')

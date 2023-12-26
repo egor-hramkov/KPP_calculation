@@ -56,6 +56,7 @@ class CoefficientInfluencePowerOnFuelConsumptionService:
 
     def show_graphic(self):
         """График коэффициента влияния мощности на расход топлива"""
+        plt.clf()
         plt.xlabel("Частота, об/мин")
         plt.title('Коэффициент влияния мощности на расход топлива')
         plt.plot(self.frequency_array, self.coefs_hub1, label='1 Передача')

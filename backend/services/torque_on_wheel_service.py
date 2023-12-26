@@ -58,6 +58,7 @@ class TorqueOnWheelService:
 
     def show_graphic(self):
         """Построение графика крутящего момента на колесе"""
+        plt.clf()
         plt.ylabel("об/мин")
         plt.xlabel("Частота, об/мин")
         plt.title('Крутящий момент на колесе от оборотов двигателя')

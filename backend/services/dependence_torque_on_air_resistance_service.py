@@ -119,6 +119,7 @@ class DependenceOfTorqueOnAirResistanceService:
 
     def show_graphic(self):
         """Построение графика МКР и сопротивление воздуха от скорости"""
+        plt.clf()
         plt.xlabel("Скорость км/ч")
         plt.ylabel("Н/м")
         plt.title('МКР и сопротивление воздуха от скорости')

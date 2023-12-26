@@ -25,6 +25,7 @@ from services.total_force_wheel_ideal_conditions_service import TotalForceWheelI
 from services.total_power_car_each_hub_service import TotalPowerCarEachHubService
 from services.total_resistance_force_movement_service import TotalResistanceForceMovementService
 from services.turnovers_wheel_service import TurnoversWheelsService
+from utils.graphic_helper import GraphicHelper
 
 # загружаем данные с файла конфига
 from utils.json_helper import JSONHelper
@@ -39,6 +40,7 @@ class Main:
 
         frequency_turns_per_min = config['data']['frequency_turns_per_min']
         all_dataframes: list[DataFrame] = []
+        GraphicHelper.reset_counter()
 
         # таблица с расчётом полного передаточного числа для каждой передачи/таб. 1. Передаточного числа
         gear_ratio_service = GearRatioService(config['data']['gear_ratio']['hub_1'],

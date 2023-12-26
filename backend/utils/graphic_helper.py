@@ -10,3 +10,7 @@ class GraphicHelper:
         """Сохраняет график в пнг"""
         plt.savefig(f'{GRAPHICS_DIR}/graph_{cls.graphic_counter}.png')
         cls.graphic_counter += 1
+
+    @classmethod
+    def reset_counter(cls):
+        cls.graphic_counter = 1

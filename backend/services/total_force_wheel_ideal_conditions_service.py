@@ -121,6 +121,7 @@ class TotalForceWheelIdealConditionsService:
 
     def show_graphic(self):
         """График Суммарной силы на колесе в идиальных условиях"""
+        plt.clf()
         plt.xlabel("км/ч")
         plt.title('Сопротивления качению от скорости')
 

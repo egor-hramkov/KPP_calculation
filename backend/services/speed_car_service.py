@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from pandas import DataFrame
 import matplotlib.pyplot as plt
 
-from config import GRAPHICS_DIR
 from utils.graphic_helper import GraphicHelper
 
 
@@ -76,6 +75,7 @@ class SpeedCarService:
 
     def show_graphic(self):
         """Построение графика скорости км/ч от оборотов двигателя"""
+        plt.clf()
         plt.ylabel("Скорость км/ч")
         plt.xlabel("Частота, об/мин")
         plt.title('Скорость км/ч от оборотов двигетеля')
