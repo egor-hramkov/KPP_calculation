@@ -4,8 +4,6 @@ from pandas import DataFrame
 
 from services.calculate_KPD_service import CalculateKPDService
 from services.air_resistance_service import AirResistanceService
-from services.coefficient_influence_power_fuel_consumption_maximum_loads_service import \
-    CoefficientInfluencePowerFuelConsumptionMaximumLoadsService
 from services.coefficient_influence_power_on_fuel_consumption_service import \
     CoefficientInfluencePowerOnFuelConsumptionService
 from services.coefficient_turnovers_to_fuel_service import CoefficientTurnoversToFuelService
@@ -15,15 +13,14 @@ from services.fuel_consumption_100km_minimum_load_service import FuelConsumption
 from services.fuel_consumption_service import FuelConsumptionService
 from services.gear_ratio_service import GearRatioService
 from services.power_and_torque import PowerAndTorqueService
-from services.power_on_wheel_fuel_consumption_100km_service import PowerOnWheelFuelConsumption100kmService
 from services.rolling_resistance_coefficient_dry_asphalt_service import RollingResistanceCoefficientDryAsphaltService
 from services.rolling_resistance_service import RollingResistanceService
 from services.speed_car_service import SpeedCarService
 from services.torque_on_wheel_service import TorqueOnWheelService
 from services.total_force_resistance_movement_service import TotalForceResistanceMovement
-from services.total_force_wheel_ideal_conditions_service import TotalForceWheelIdealConditionsService
 from services.total_power_car_each_hub_service import TotalPowerCarEachHubService
 from services.total_resistance_force_movement_service import TotalResistanceForceMovementService
+from services.trend_lines_service import TrendLinesService
 from services.turnovers_wheel_service import TurnoversWheelsService
 from utils.graphic_helper import GraphicHelper
 
@@ -135,20 +132,25 @@ class Main:
         all_dataframes.append(speed_car)
 
         # Рассчёт мощности и крутящего момента / таб. Мощьности и крутящего момента
-        power_and_torque_info = config['data']['engine_performance']['measurements']
-        power_and_torque_turns = [data['freq_turns_per_min'] for data in power_and_torque_info]
-        power_and_torque_hms = [data['Hm'] for data in power_and_torque_info]
-        power_and_torque_horse_powers = [data['horse_power'] for data in power_and_torque_info]
+        power_and_torque_info = pd.DataFrame()
+        power_and_torque_info['power_and_torque_turns'] = [data['freq_turns_per_min'] for data in config['data']['engine_performance']['measurements']]
+        power_and_torque_info['power_and_torque_hms'] = [data['Hm'] for data in config['data']['engine_performance']['measurements']]
+        power_and_torque_info['power_and_torque_horse_powers'] = [data['horse_power'] for data in config['data']['engine_performance']['measurements']]
+
+        trend_lines_service = TrendLinesService(power_and_torque_info)
+        coefficient_polynom = pd.DataFrame()
+        coefficient_polynom_hm = trend_lines_service.polynom_coefs_hm
+        coefficient_polynom_hp = trend_lines_service.polynom_coefs_hp
 
         # таблица коэффициентов полинома / таблица коэффициентов полинома
         coefficient_polynom = pd.DataFrame()
         coefficient_polynom['Данные'] = ['Коэффициент момент', 'Коэффициент мощность']
         coefficient_polynom['X/5'] = [0.0, 0.0]
-        coefficient_polynom['X/4'] = [6.5177394e-13, -1.7511371e-13]
-        coefficient_polynom['X/3'] = [-1.035910648521e-08, -1.97857344017e-09]
-        coefficient_polynom['X/2'] = [0.00003447582159142, 0.0000155372640980185]
-        coefficient_polynom['X'] = [-0.010124117314029, 0.00599106601989137]
-        coefficient_polynom['Собственный коэффициент'] = [175.14493655691, 7.45996575251171]
+        coefficient_polynom['X/4'] = [coefficient_polynom_hm[0][0], coefficient_polynom_hp[0][0]]
+        coefficient_polynom['X/3'] = [coefficient_polynom_hm[1][0], coefficient_polynom_hp[1][0]]
+        coefficient_polynom['X/2'] = [coefficient_polynom_hm[2][0], coefficient_polynom_hp[2][0]]
+        coefficient_polynom['X'] = [coefficient_polynom_hm[3][0], coefficient_polynom_hp[3][0]]
+        coefficient_polynom['Собственный коэффициент'] = [coefficient_polynom_hm[4][0], coefficient_polynom_hp[4][0]]
 
         coefficient_polynom.name = 'Коэффициенты полинома'
         all_dataframes.append(coefficient_polynom)
