@@ -41,6 +41,31 @@ export const DataList = (props: Props) => {
     setReversedArray(transposeArray(dataArray));
   }, [props.list]);
 
+  const setImage = (title: string): number | number[] | false => {
+    switch (title) {
+      case 'Скорость автомобиля':
+        return 1
+      case 'Мощность и крутящий момент':
+        return [2, 3, 4, 5]
+      case 'Сопротивление воздуха':
+        return 6
+      case 'Крутящий момент на колесе':
+        return 7
+      case 'Зависимость крутящего момента от сопротивления воздуха':
+        return 8
+      case 'Коэффиценты сопротивления кочению колеса':
+        return 9
+      case 'Таблица коэффициентов влияния оборотов двигателя на расход топлива':
+        return 10
+      case 'Коэффициенты влияния мощности на расход топлива':
+        return 11
+      case 'Расход топлива автомобиля в час':
+        return 12
+      default:
+        return false
+    }
+  }
+
   return (
     <section className="data-section">
       <h1 className="data-header">{props.title}</h1>
@@ -64,7 +89,7 @@ export const DataList = (props: Props) => {
           ))}
         </tbody>
       </table>
-      <img src={`http://localhost:80/static/graphics/graph_${props.key1 + 1}.png`} />
+      {setImage(props.title) && Array.isArray(setImage(props.title)) ? setImage(props.title).map((item) => <img src={`http://localhost:80/static/graphics/graph_${item}.png`} />) : <img src={`http://localhost:80/static/graphics/graph_${setImage(props.title)}.png`} />}
     </section>
   );
 };
