@@ -10,6 +10,24 @@ from utils.table_helper import TableHelper
 
 @dataclass
 class TotalForceWheelIdealConditionsService:
+    """Суммарная сила на колесе в идеальных условиях
+        Parameters
+            ----------
+            km_per_hour_array : numpy.array
+                Скорости автомобиля, км в час
+            total_resistance_force_movement_dataset : DataFrame
+                Коэффиценты сопротивлению качению
+            speed_car_dataset : DataFrame
+                Скорости автомобиля
+            polynom_dataset : DataFrame
+                Коэффиценты полинома
+            dependence_torque_on_air_resistance_dataset : DataFrame
+                Зависимость крутящего момента от сопротивления воздуха
+            gear_ratio_dataset : DataFrame
+                Передаточные числа
+            kpd_dataset : DataFrame
+                КПД
+    """
     km_per_hour_array: numpy.array
     total_resistance_force_movement_dataset: DataFrame
     #TODO: доделать сервис
