@@ -138,7 +138,6 @@ class Main:
         power_and_torque_info['power_and_torque_horse_powers'] = [data['horse_power'] for data in config['data']['engine_performance']['measurements']]
 
         trend_lines_service = TrendLinesService(power_and_torque_info)
-        coefficient_polynom = pd.DataFrame()
         coefficient_polynom_hm = trend_lines_service.polynom_coefs_hm
         coefficient_polynom_hp = trend_lines_service.polynom_coefs_hp
 
@@ -501,17 +500,6 @@ class Main:
 
         fuel_consumption_100km_minimum_load.name = 'Расход топлива автомобиля на 100км  для минимальной нагрузки'
         all_dataframes.append(fuel_consumption_100km_minimum_load)
-
-
-        # таблица без названия строки 573-604 excel / Мощность на колесе и расход топлива на 100 км (название взято из word)
-        # power_on_wheel_fuel_consumption_100km_service = PowerOnWheelFuelConsumption100kmService()
-        # TODO:нужно доделать, требует таблиц, которых ещё нет
-
-
-        # таблица коэффициентов влияния мощности на расход топлива при максимальных нагрузках / коэффициент влияния мощности на расход топлива при максимальных нагрузках
-        # coefficient_influence_power_fuel_consumption_maximum_loads_service = CoefficientInfluencePowerFuelConsumptionMaximumLoadsService()
-        #TODO:нужно сделать - заебался на сегодня
-
 
         # таблица расчёта динамического фактора
         dynamic_factor_service = DynamicFactorService(km_per_hour, speed_car, coefficient_polynom, wheel_info_table,
