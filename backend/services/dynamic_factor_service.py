@@ -6,6 +6,7 @@ from pandas import DataFrame
 
 @dataclass
 class DynamicFactorService:
+    """Рассчитывает Динамический фактор"""
     km_per_hour_array: numpy.array
     speed_car_dataset: DataFrame
     polynom_dataset: DataFrame

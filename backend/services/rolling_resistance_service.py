@@ -9,10 +9,11 @@ from utils.graphic_helper import GraphicHelper
 
 @dataclass
 class RollingResistanceService:
+    """Рассчитывает Коэффициенты сопротивления качению"""
     km_per_hour_array: numpy.array
-    coefficient_rolling_resistance_wheel_dataset:DataFrame
-    mass_car_dataset:DataFrame
-    coefficient_influence_speed:DataFrame
+    coefficient_rolling_resistance_wheel_dataset: DataFrame
+    mass_car_dataset: DataFrame
+    coefficient_influence_speed: DataFrame
 
     def __post_init__(self):
         self.coef_rolling_resistance_wheel_type1 = self.coefficient_rolling_resistance_wheel_dataset['Минимум'][0]
@@ -60,9 +61,10 @@ class RollingResistanceService:
         return self.__calculate_coef_rolling_resistance(self.coef_rolling_resistance_wheel_type8)
 
     def __calculate_coef_rolling_resistance(self, coef_rolling_resistance_wheel):
-        coefs=[]
+        coefs = []
         for speed in self.km_per_hour_array:
-            coef=coef_rolling_resistance_wheel*(1+self.coefficient_influence_speed_truck*(speed**2))*self.full_mass
+            coef = coef_rolling_resistance_wheel * (
+                        1 + self.coefficient_influence_speed_truck * (speed ** 2)) * self.full_mass
 
             coefs.append(coef)
         return coefs

@@ -17,6 +17,8 @@ cd backend
 pip install -r requirements.txt
 python app.py
 ~~~
+# Документация к проекту
+[DOCUMENTATION.md](DOCUMENTATION.md)
 
 # Troubleshooting:
 Если добавили какую-то питон библиотеку, обновите список библиотек, используемых в проекте

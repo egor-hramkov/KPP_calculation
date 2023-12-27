@@ -6,6 +6,7 @@ from pandas import DataFrame
 
 @dataclass
 class FuelConsumption100kmMinimumLoadService:
+    """Расход топлива автомобиля на 100км  для минимальной нагрузки"""
     frequency_turns_per_min: numpy.array
     fuel_consumption_dataset: DataFrame
     speed_car_dataset: DataFrame

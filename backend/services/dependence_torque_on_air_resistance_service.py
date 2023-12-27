@@ -10,6 +10,7 @@ from utils.table_helper import TableHelper
 
 @dataclass
 class DependenceOfTorqueOnAirResistanceService:
+    """Рассчитывает зависимость крутящего момента от сопротивления воздуха"""
     km_per_hour_array: numpy.array
     dimensions_dataset: DataFrame
     speed_car_dataset: DataFrame
