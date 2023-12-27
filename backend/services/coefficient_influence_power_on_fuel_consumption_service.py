@@ -8,7 +8,7 @@ from utils.graphic_helper import GraphicHelper
 
 @dataclass
 class CoefficientInfluencePowerOnFuelConsumptionService:
-    """коэффициент влияния мощности на расход топлива"""
+    """ Сервис по расчёту коэффициентов влияния мощности на расход топлива"""
     torque_on_wheel_dataset: DataFrame
     air_resistance_dataset: DataFrame
 

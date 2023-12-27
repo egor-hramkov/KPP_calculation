@@ -3,7 +3,17 @@ from dataclasses import dataclass, field
 
 @dataclass
 class CalculateKPDService:
-    """Рассчитывает КПД трансмиссии"""
+    """Сервис для рассчёта КПД трансмиссии
+
+       Parameters
+            ----------
+            number_of_spur_gears : list
+                Список числа цилиндров каждой передачи
+            number_of_bevel_gears : list
+                Список конических передач каждой передачи
+            number_of_cardan_gears : list
+                Число крестовин кардана каждой передачи
+    """
     number_of_spur_gears: list = field(default_factory=list)
     number_of_bevel_gears: list = field(default_factory=list)
     number_of_cardan_gears: list = field(default_factory=list)

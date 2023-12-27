@@ -3,7 +3,21 @@ from dataclasses import dataclass
 
 @dataclass
 class GearRatioService:
-    """Сервис по высчитыванию полного передаточного числа для каждой передачи"""
+    """Сервис по высчитыванию полного передаточного числа для каждой передачи
+
+        Parameters
+            ----------
+            gear_ratio_hub(number) : float
+                Передаточное число определённой передачи (из config)
+            gear_ratio_reverse : float
+                Передаточное число задней передачи
+            transfer_case : float
+                Передаточное число раздаточной коробки (если нет информации, то в config должно быть 1.0)
+            on_board_gearbox : float
+                Передаточное число бортового редуктора (если нет информации, то в config должно быть 1.0)
+            main_pair : float
+                Передаточное число главной пары
+    """
     gear_ratio_hub1: float
     gear_ratio_hub2: float
     gear_ratio_hub3: float

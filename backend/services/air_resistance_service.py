@@ -8,7 +8,21 @@ from utils.graphic_helper import GraphicHelper
 
 @dataclass
 class AirResistanceService:
-    """Рассчёт габаритных размеров и сопротивления воздуха"""
+    """Рассчёт габаритных размеров и сопротивления воздуха
+
+       Parameters
+            ----------
+            width : float
+                Ширина профиля колеса (мм)
+            height : float
+                Высота профиля колеса (в процентах от ширины)
+            streamline_coefficient : float
+                Коеффициент смятия шины
+            speed_car_data_frame : float
+                Датасет со скоростями автомобиля относительно кол-ва оборотов двигателя, номера передачи
+            frequency_turns_per_min : list
+                Список оборотов, для которых нужно расчитать данные
+    """
     width: float
     height: float
     streamline_coefficient: float
