@@ -6,7 +6,7 @@ docker compose build
 docker compose up -d
 ~~~
 
-После запуска контейнеров перейти на http://localhost:5173/
+После запуска контейнеров перейти на http://localhost:3001/
 
 Бэкэнд запускается на 80 порту.
 
