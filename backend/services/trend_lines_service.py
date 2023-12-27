@@ -11,7 +11,13 @@ from utils.graphic_helper import GraphicHelper
 
 @dataclass
 class TrendLinesService:
-    '''Класс для построения линий трендов'''
+    '''Сервис для построения линий трендов
+
+        Parameters
+            ----------
+            power_and_torque_info_dataset : array
+                Датасет мощности и крутящего момента (добытых путём замеров, данные хранятся в config)
+    '''
     power_and_torque_info_dataset: DataFrame
 
     def __post_init__(self):
@@ -33,6 +39,10 @@ class TrendLinesService:
         return self._get_polynom_coefs(x_data, y_data)
 
     def _get_linear_regression(self, y_column):
+        """
+        :param y_column: Массив данных для обучения (в частности массив значений момента или л.с.)
+        :return: Возвращает 2 массива X и Y (X-увеличенный массив оборотов, Y-спрогнозируемые значения момента или л.с.)
+        """
         polynomial_features = PolynomialFeatures(degree=4, include_bias=False)
         x_data = polynomial_features.fit_transform(self.power_and_torque_info_dataset[['power_and_torque_turns']])
         predicate_data = polynomial_features.fit_transform(self.predicate_freq_array.reshape(-1, 1))
@@ -42,6 +52,11 @@ class TrendLinesService:
         return (self.predicate_freq_array, predicate_result.reshape(-1, 1))
 
     def _get_polynom_coefs(self, x_array, y_aaray):
+        """
+        :param x_array: Выборка X
+        :param y_aaray: Выборка Y
+        :return: Список коэффициентов поолиномомов (от 1 до 4)
+        """
         return np.polyfit(x_array, y_aaray, 4)
 
     def show_graphic_torques(self):

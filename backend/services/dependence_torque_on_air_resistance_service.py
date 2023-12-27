@@ -10,6 +10,24 @@ from utils.table_helper import TableHelper
 
 @dataclass
 class DependenceOfTorqueOnAirResistanceService:
+    """ Сервис для формирования таблицы совмещённой мощности на колесе для каждой передачи и сопротивление воздуха
+
+        Parameters
+            ----------
+            km_per_hour_array : array
+                Массив величин скорости, для которых нужно сформировать расчёты
+            dimensions_dataset : DataFrame
+                Датасет габаритов автомобиля
+            speed_car_dataset : DataFrame
+                Датасет с скоростью автомобиля относительно кол-ва оборотов двигателя, номера передачи, данных о передаточных числах каждой скорости и параметрах колёс
+            polynom_dataset : DataFrame
+                Датасет коэффициентов полинома
+            gear_ratio_dataset : DataFrame
+                Датасет полных передаточных чисел для каждой передачи
+            kpd_dataset : DataFrame
+                Датасет кпд трансмиссии
+
+    """
     km_per_hour_array: numpy.array
     dimensions_dataset: DataFrame
     speed_car_dataset: DataFrame
@@ -91,12 +109,22 @@ class DependenceOfTorqueOnAirResistanceService:
         return self.__calculate_torque_hub(self.turnovers_hub5, self.full_gear_ratio_hub5, self.kpd_hub5)
 
     def __calculate_air_resistance(self):
+        """
+        :return: сопротивление воздуха
+        """
         air_resistance = []
         for speed in self.km_per_hour_array:
             air_resistance.append(0.5 * self.midelev_section * self.coef_streamlining * 1.22 * ((speed / 3.6) ** 2))
         return air_resistance
 
     def __calculate_turnovers_hub(self, min_speed, max_speed, min_speed_hub):
+        """
+
+        :param min_speed: Минимальная скорость диапазона
+        :param max_speed: Максимальная скорость диапазона
+        :param min_speed_hub: Минимальная скорость на конкретной передаче
+        :return: список оборотов для определённой передачи в определённом скоростном диапазоне
+        """
         turnovers_hub = []
         for speed in self.km_per_hour_array:
             if min_speed <= speed <= max_speed:

@@ -8,7 +8,13 @@ from utils.graphic_helper import GraphicHelper
 
 @dataclass
 class CoefficientTurnoversToFuelService:
-    """Сервис для формирования таблицы коэффициентов влияния оборотов двигателя на расход топлива"""
+    """Сервис для формирования таблицы коэффициентов влияния оборотов двигателя на расход топлива
+
+       Parameters
+            ----------
+            frequency_turns_per_min : array
+                Массив оборотов, для которых будут осуществляться вычисления
+    """
     frequency_turns_per_min: numpy.array
 
     def __post_init__(self):
@@ -19,6 +25,9 @@ class CoefficientTurnoversToFuelService:
         return self.__calculate_coefs_effect_engine_speed_on_fuel_consumption()
 
     def __calculate_coefs_effect_engine_speed_on_fuel_consumption(self):
+        """
+        :return: список коэффициентов влияния оборотов двигателя на расход топлива
+        """
         coefs = []
         max_turn = self.frequency_turns_per_min[-1]
         for turn in self.frequency_turns_per_min:
