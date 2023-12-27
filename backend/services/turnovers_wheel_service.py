@@ -3,7 +3,23 @@ from dataclasses import dataclass
 
 @dataclass
 class TurnoversWheelsService:
-    """Таблица - обороты колеса от частоты оборотов двигателя"""
+    """Таблица - обороты колеса от частоты оборотов двигателя
+
+       Parameters
+            ----------
+            full_gear_ratio_hub1 : float
+                Передаточное число для 1 передачи
+            full_gear_ratio_hub2 : float
+                Передаточное число для 2 передачи
+            full_gear_ratio_hub3 : float
+                Передаточное число для 3 передачи
+            full_gear_ratio_hub4 : float
+                Передаточное число для 4 передачи
+            full_gear_ratio_hub5 : float
+                Передаточное число для 5 передачи
+            frequency_turns_per_min : list
+                Список оборотов, для которых нужно расчитать данные
+        """
     full_gear_ratio_hub1: float
     full_gear_ratio_hub2: float
     full_gear_ratio_hub3: float
@@ -39,6 +55,7 @@ class TurnoversWheelsService:
 
     @property
     def turnovers_wheels_reverse(self) -> list:
+        """Частота вращения колеса об/мин на R скорости"""
         return self.__calculate_turnovers_wheels_array(self.full_gear_ratio_reverse)
 
     def __calculate_turnovers_wheels_array(self, full_gear_ratio: float) -> list:

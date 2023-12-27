@@ -7,7 +7,21 @@ from utils.graphic_helper import GraphicHelper
 
 @dataclass
 class SpeedCarService:
-    """Рассчёт скорости от оборотов двигателя км/ч"""
+    """Рассчёт скорости от оборотов двигателя км/ч
+
+        Parameters
+            ----------
+            profile_width : float
+                Ширина колеса
+            profile_height : float
+                Высота колеса
+            diameter : float
+               Диаметр колеса
+            turnovers_wheel_data_frame : DataFrame
+                Обороты колеса
+            frequency_turns_per_min : list
+               Список оборотов, для которых нужно расчитать данные
+    """
     profile_width: float
     profile_height: float
     diameter: float
@@ -18,11 +32,16 @@ class SpeedCarService:
         self.nominal_radius = 0.0254 * (self.diameter / 2) + (self.profile_width / 1000) * (self.profile_height / 100)
         self.static_radius = self.nominal_radius * self.__tire_crumpling_ratio()
         self.dynamic_radius = self.nominal_radius - ((self.nominal_radius - self.static_radius) / 3)
-        self.turnovers_hub1 = self.turnovers_wheel_data_frame.iloc[:, 1].to_numpy()  # массив кол-ва оборотов колеса на 1 скорости
-        self.turnovers_hub2 = self.turnovers_wheel_data_frame.iloc[:, 2].to_numpy()  # массив кол-ва оборотов колеса на 2 скорости
-        self.turnovers_hub3 = self.turnovers_wheel_data_frame.iloc[:, 3].to_numpy()  # массив кол-ва оборотов колеса на 3 скорости
-        self.turnovers_hub4 = self.turnovers_wheel_data_frame.iloc[:, 4].to_numpy()  # массив кол-ва оборотов колеса на 4 скорости
-        self.turnovers_hub5 = self.turnovers_wheel_data_frame.iloc[:, 5].to_numpy()  # массив кол-ва оборотов колеса на 5 скорости
+        self.turnovers_hub1 = self.turnovers_wheel_data_frame.iloc[:,
+                              1].to_numpy()  # массив кол-ва оборотов колеса на 1 скорости
+        self.turnovers_hub2 = self.turnovers_wheel_data_frame.iloc[:,
+                              2].to_numpy()  # массив кол-ва оборотов колеса на 2 скорости
+        self.turnovers_hub3 = self.turnovers_wheel_data_frame.iloc[:,
+                              3].to_numpy()  # массив кол-ва оборотов колеса на 3 скорости
+        self.turnovers_hub4 = self.turnovers_wheel_data_frame.iloc[:,
+                              4].to_numpy()  # массив кол-ва оборотов колеса на 4 скорости
+        self.turnovers_hub5 = self.turnovers_wheel_data_frame.iloc[:,
+                              5].to_numpy()  # массив кол-ва оборотов колеса на 5 скорости
         self.show_graphic()
 
     @property

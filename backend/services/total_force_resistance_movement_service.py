@@ -6,6 +6,17 @@ from pandas import DataFrame
 
 @dataclass
 class TotalForceResistanceMovement:
+    """Сервис по рассчёту суммарной силы сопротивления движению
+        Parameters
+            ----------
+            frequency_turns_per_min : numpy.array
+                Список оборотов, для которых нужно расчитать данные
+            rolling_resistance_coefficient_dry_asphalt_dataset : DataFrame
+                Коэффициенты сопротивления качению при хорошем состояние сухого асфальта
+            air_resistance_dataset : DataFrame
+               Сопротивление воздуха
+
+    """
     frequency_turns_per_min: numpy.array
     rolling_resistance_coefficient_dry_asphalt_dataset: DataFrame
     air_resistance_dataset: DataFrame

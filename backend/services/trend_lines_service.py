@@ -11,7 +11,7 @@ from utils.graphic_helper import GraphicHelper
 
 @dataclass
 class TrendLinesService:
-    '''Класс для построения линий трендов'''
+    """Класс для построения линий трендов"""
     power_and_torque_info_dataset: DataFrame
 
     def __post_init__(self):

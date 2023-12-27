@@ -8,7 +8,19 @@ from utils.graphic_helper import GraphicHelper
 
 @dataclass
 class TorqueOnWheelService:
-    """ Сервис для формирования данных о крутящем момменте на колесе относиельно передачи и кол-ва оборотов двигателя"""
+    """ Сервис для формирования данных о крутящем момменте на колесе относиельно передачи и кол-ва оборотов двигателя
+
+        Parameters
+            ----------
+            gear_ratios_dataset : DataFrame
+                Передаточные числа
+            power_and_torque_dataset : DataFrame
+                Мощность и крутящий момент
+            kpd_dataset : DataFrame
+               КПД
+            frequency_turns_per_min : list
+               Список оборотов, для которых нужно расчитать данные
+    """
     gear_ratios_dataset: DataFrame
     power_and_torque_dataset: DataFrame
     kpd_dataset: DataFrame
