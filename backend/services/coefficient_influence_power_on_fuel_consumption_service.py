@@ -8,7 +8,15 @@ from utils.graphic_helper import GraphicHelper
 
 @dataclass
 class CoefficientInfluencePowerOnFuelConsumptionService:
-    """ Сервис по расчёту коэффициентов влияния мощности на расход топлива"""
+    """ Сервис по расчёту коэффициентов влияния мощности на расход топлива
+
+        Parameters
+            ----------
+            torque_on_wheel_dataset : DataFrame
+                Датасет крутящего момента на колесе
+            air_resistance_dataset : DataFrame
+                Датасет сопротивления воздуха
+    """
     torque_on_wheel_dataset: DataFrame
     air_resistance_dataset: DataFrame
 
@@ -47,6 +55,11 @@ class CoefficientInfluencePowerOnFuelConsumptionService:
         return self.__calculate_coefs_hub(self.torque_on_wheel_hub5, self.air_resistance_hub5)
 
     def __calculate_coefs_hub(self, torque_on_wheel_hub, air_resistance_hub):
+        """
+        :param torque_on_wheel_hub: список крутящих моментов при определённых оборотов
+        :param air_resistance_hub: список сопротивления воздуха при определённых оборотах
+        :return: список коэффициентов для конкретной передачи передачи
+        """
         coefs = []
         for torque, air_resistance in zip(torque_on_wheel_hub, air_resistance_hub):
             coef = 3.27 - 8.22 * (air_resistance / torque) + 9.13 * ((air_resistance / torque) ** 2) - 3.18 * (
