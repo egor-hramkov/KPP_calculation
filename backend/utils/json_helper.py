@@ -9,15 +9,10 @@ class JSONHelper:
         main_json = {}
         counter = 0  # На всякий случай, если у ДатаФрейма не будет имени
         for dataframe in dataframes:
-            dataframe_json = self.dataframe_to_dict(dataframe)
+            dataframe_json = dataframe.to_dict()
             if hasattr(dataframe, 'name'):
                 main_json[dataframe.name] = {**dataframe_json}
             else:
                 main_json[f'some_table_{counter}'] = {**dataframe_json}
                 counter += 1
         return main_json
-
-    def dataframe_to_dict(self, dataframe: DataFrame) -> dict:
-        """Преобразование DataFrame -> JSON"""
-        dict_data = dataframe.to_dict()
-        return dict_data
