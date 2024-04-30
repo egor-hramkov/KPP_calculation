@@ -10,7 +10,7 @@ services:
     restart: 'no'
     command: sh -c 'cd backend && python3 app.py'
     volumes:
-      - static:/usr/src/app/backend/static
+      - static:/usr/src/app/static
   frontend:
     ports:
       - 3001:5173
